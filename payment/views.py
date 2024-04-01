@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.views import APIView
 
 from payment.models import Payment
 from payment.serializers import (
@@ -22,3 +23,24 @@ class PaymentViewSet(viewsets.ModelViewSet):
             return PaymentDetailSerializer
 
         return PaymentSerializer
+
+
+class PaymentSuccessView(APIView):
+    """
+    API endpoint for success payment.
+    """
+    pass
+
+
+class PaymentCancelView(APIView):
+    """
+    API endpoint for cancelling payment.
+    """
+    pass
+
+
+class PaymentFineSuccessView(APIView):
+    """
+    API endpoint for success fine payment.
+    """
+    pass
