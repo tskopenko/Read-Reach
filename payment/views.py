@@ -52,8 +52,8 @@ class PaymentSuccessView(APIView):
     """
 
     def post(self, request, pk):
-        borrowing = Borrowing.objects.get(id=pk)
         try:
+            borrowing = Borrowing.objects.get(id=pk)
             payment = Payment.objects.get(borrowing=borrowing)
             payment.status = PaymentStatus.PAID.value
             payment.type = PaymentType.PAYMENT.value
@@ -82,8 +82,8 @@ class PaymentFineSuccessView(APIView):
     API endpoint for success fine payment.
     """
     def post(self, request, pk):
-        borrowing = Borrowing.objects.get(id=pk)
         try:
+            borrowing = Borrowing.objects.get(id=pk)
             payment = Payment.objects.get(borrowing=borrowing)
             payment.status = PaymentStatus.PAID.value
             payment.type = PaymentType.FINE.value
