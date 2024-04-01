@@ -16,4 +16,6 @@ router.register("payments", PaymentViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("<int:pk>/success_payment/", PaymentSuccessView.as_view(), name="success_payment"),
+    path("<int:pk>/cancel_payment/", PaymentCancelView.as_view(), name="cancel_payment"),
 ]
