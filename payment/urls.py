@@ -12,7 +12,7 @@ from payment.views import (
 app_name = "payment"
 
 router = routers.DefaultRouter()
-router.register("", PaymentViewSet)
+router.register("payments", PaymentViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
