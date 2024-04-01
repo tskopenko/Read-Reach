@@ -1,7 +1,10 @@
-from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from payment.models import Payment
+from payment.models import Payment, PaymentStatus, PaymentType
+from borrowing.models import Borrowing
 from payment.serializers import (
     PaymentSerializer,
     PaymentListSerializer,
@@ -45,14 +48,31 @@ class PaymentSuccessView(APIView):
     """
     API endpoint for success payment.
     """
-    pass
+
+    def post(self, request, pk):
+        borrowing = Borrowing.objects.get(id=pk)
+        try:
+            payment = Payment.objects.get(borrowing=borrowing)
+            payment.status = PaymentStatus.PAID.value
+            payment.type = PaymentType.PAYMENT.value
+            payment.money_to_pay = 0
+            payment.save()
+            return Response("Payment successful", status=status.HTTP_200_OK)
+
+        except Borrowing.DoesNotExist:
+            return Response("Borrowing not found", status=status.HTTP_404_NOT_FOUND)
+        except Payment.DoesNotExist:
+            return Response("Payment not found", status=status.HTTP_404_NOT_FOUND)
 
 
 class PaymentCancelView(APIView):
     """
     API endpoint for cancelling payment.
     """
-    pass
+    def post(self, request, pk):
+        payment = get_object_or_404(Payment, pk=pk)
+        payment.delete()
+        return Response("Payment cancelled", status=status.HTTP_200_OK)
 
 
 class PaymentFineSuccessView(APIView):
@@ -60,3 +80,4 @@ class PaymentFineSuccessView(APIView):
     API endpoint for success fine payment.
     """
     pass
+
