@@ -8,6 +8,9 @@ from payment.views import (
     PaymentFineSuccessView,
 )
 
+
+app_name = "payment"
+
 router = routers.DefaultRouter()
 router.register("", PaymentViewSet)
 
