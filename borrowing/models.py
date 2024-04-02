@@ -16,13 +16,16 @@ class Borrowing(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="borrowings")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="borrowings")
 
+    def __str__(self):
+        return str(self.borrow_date)
+
     def clean(self):
-
         """Performs validation checks on the Borrowing instance."""
-
         super().clean()
+
         if self.actual_return_date and self.actual_return_date < self.borrow_date:
             raise ValidationError("Actual return date cannot be before borrow date")
 
-        if self.expected_return_date < self.borrow_date:
-            raise ValidationError("Expected return date cannot be before borrow date")
+        if self.expected_return_date and self.borrow_date:
+            if self.expected_return_date < self.borrow_date:
+                raise ValidationError("Expected return date cannot be before borrow date")

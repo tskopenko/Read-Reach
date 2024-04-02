@@ -30,6 +30,24 @@ class BorrowingViewSet(
 
         return self.serializer_class
 
+    def get_queryset(self):
+        """Retrieve the movies with filters"""
+        queryset = self.queryset
+        user = self.request.user
+
+        if user.is_superuser:
+            user_id = self.request.query_params.get("user_id", None)
+            if user_id:
+                queryset = queryset.filter(user_id=user_id)
+        queryset = queryset.filter(user=user)
+
+        is_active = self.request.query_params.get("is_active")
+        if is_active:
+            is_active_bool = is_active.lower() == "true"
+            queryset = queryset.filter(actual_return_date__isnull=is_active_bool)
+
+        return queryset
+
     def perform_create(self, serializer):
         """Perform validation book inventory is not 0 when creating a Borrowing object."""
         book = serializer.validated_data["book"]
