@@ -74,8 +74,8 @@ def create_checkout_session(pk: int, type_: str) -> Union[Response, None]:
                 }
             ],
             mode="payment",
-            success_url=f"{LOCAL_DOMAIN}api/borrowings/success?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{LOCAL_DOMAIN}api/borrowings/canceled/",
+            success_url=f"{LOCAL_DOMAIN}api/payments/success_payment?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{LOCAL_DOMAIN}api/payments/cancel_payment/",
         )
         Payment.objects.create(
             borrowing=borrowing,
@@ -87,3 +87,56 @@ def create_checkout_session(pk: int, type_: str) -> Union[Response, None]:
         return Response("Checkout session created successfully", status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def stripe_card_payment(data_dict):
+    try:
+        # Extract card details from the data dictionary
+        card_details = {
+            "number": data_dict["card_number"],
+            "exp_month": data_dict["expiry_month"],
+            "exp_year": data_dict["expiry_year"],
+            "cvc": data_dict["cvc"],
+        }
+
+        # Create a payment intent
+        payment_intent = stripe.PaymentIntent.create(
+            amount=10000,
+            currency="inr",
+        )
+
+        # Modify the payment intent to specify payment method (card)
+        stripe.PaymentIntent.modify(
+            payment_intent["id"],
+            payment_method="card",
+        )
+
+        # Confirm the payment intent
+        payment_confirm = stripe.PaymentIntent.confirm(payment_intent["id"])
+
+        # Retrieve the updated payment intent information
+        payment_intent_modified = stripe.PaymentIntent.retrieve(payment_intent["id"])
+
+        if payment_intent_modified and payment_intent_modified["status"] == "succeeded":
+            response = {
+                "message": "Card Payment Success",
+                "status": status.HTTP_200_OK,
+                "card_details": card_details,
+                "payment_intent": payment_intent_modified,
+            }
+        else:
+            response = {
+                "message": "Card Payment Failed",
+                "status": status.HTTP_400_BAD_REQUEST,
+                "card_details": card_details,
+                "payment_intent": payment_intent_modified,
+            }
+
+    except stripe.error.CardError as e:
+        # Handle card error (e.g., invalid card number, expired card)
+        response = {
+            "error": str(e),
+            "status": status.HTTP_400_BAD_REQUEST,
+        }
+
+    return response
