@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "borrowing",
     "payment",
     "notification",
+    "django_q",
 ]
 
 MIDDLEWARE = [
