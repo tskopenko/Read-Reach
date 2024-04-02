@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from book.models import Book
 from book.serializers import BookSerializer
 
+
 BOOK_URL = reverse("book:book-list")
 
 
@@ -24,8 +25,11 @@ def sample_book(**params):
 
 
 class UnAuthorizedTests(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+
     def test_create_book_forbidden(self):
-        client = APIClient()
         payload = {
             "title": "Test book",
             "author": "Test author",
@@ -39,6 +43,7 @@ class UnAuthorizedTests(TestCase):
 
 
 class BookViewSetTests(TestCase):
+
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
@@ -70,6 +75,7 @@ class BookViewSetTests(TestCase):
 
 
 class AdminBookTest(TestCase):
+
     def setUp(self):
         self.client = APIClient()
         self.admin_user = get_user_model().objects.create_user(
