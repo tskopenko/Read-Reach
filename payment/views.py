@@ -1,16 +1,16 @@
-from datetime import date
+import stripe
 
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from payment.models import Payment, PaymentStatus, PaymentType
-from borrowing.models import Borrowing
+from payment.models import Payment, PaymentStatus
 from payment.serializers import (
     PaymentSerializer,
     PaymentListSerializer,
-    PaymentDetailSerializer
+    PaymentDetailSerializer,
+    CardInformationSerializer,
 )
 
 
@@ -18,6 +18,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     """
     API endpoint for payment create, list, retrieve operations.
     """
+
     queryset = Payment.objects.all().select_related("borrowing")
     serializer_class = PaymentSerializer
 
@@ -28,9 +29,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         """
         if self.action == "list":
             if not self.request.user.is_staff:
-                return self.queryset.filter(
-                    borrowing_id__user=self.request.user
-                )
+                return self.queryset.filter(borrowing_id__user=self.request.user)
 
         return self.queryset
 
@@ -50,19 +49,16 @@ class PaymentSuccessView(APIView):
     """
     API endpoint for success payment.
     """
-
-    def post(self, request, pk):
+    def get(self, request):
         try:
-            borrowing = Borrowing.objects.get(id=pk)
-            payment = Payment.objects.get(borrowing=borrowing)
+            session_id = request.query_params.get("session_id")
+            session = stripe.checkout.Session.retrieve(session_id)
+            payment = Payment.objects.get(session_id=session_id)
             payment.status = PaymentStatus.PAID.value
-            payment.type = PaymentType.PAYMENT.value
-            payment.money_to_pay = 0
             payment.save()
-            return Response("Payment successful", status=status.HTTP_200_OK)
-
-        except Borrowing.DoesNotExist:
-            return Response("Borrowing not found", status=status.HTTP_404_NOT_FOUND)
+            return HttpResponse("Payment successfully completed!")
+        except stripe.error.InvalidRequestError as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
         except Payment.DoesNotExist:
             return Response("Payment not found", status=status.HTTP_404_NOT_FOUND)
 
@@ -71,34 +67,100 @@ class PaymentCancelView(APIView):
     """
     API endpoint for cancelling payment.
     """
-    def post(self, request, pk):
-        payment = get_object_or_404(Payment, pk=pk)
-        payment.delete()
-        return Response("Payment cancelled", status=status.HTTP_200_OK)
+    def get(self, request):
+        message = (
+            "Payment can be completed later"
+        )
+        return HttpResponse(message)
 
 
-class PaymentFineSuccessView(APIView):
+class PaymentAPI(APIView):
     """
-    API endpoint for success fine payment.
+    API endpoint for processing credit card payments.
     """
-    def post(self, request, pk):
+    serializer_class = CardInformationSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        response = {}
+        if serializer.is_valid():
+            data_dict = serializer.data
+
+            stripe.api_key = "your-key-goes-here"
+            response = self.stripe_card_payment(data_dict=data_dict)
+
+        else:
+            response = {
+                "errors": serializer.errors,
+                "status": status.HTTP_400_BAD_REQUEST,
+            }
+
+        return Response(response)
+
+    def stripe_card_payment(self, data_dict):
         try:
-            borrowing = Borrowing.objects.get(id=pk)
-            payment = Payment.objects.get(borrowing=borrowing)
-            payment.status = PaymentStatus.PAID.value
-            payment.type = PaymentType.FINE.value
-            payment.money_to_pay = 0
-            payment.save()
+            card_details = {
+                "type": "card",
+                "card": {
+                    "number": data_dict["card_number"],
+                    "exp_month": data_dict["expiry_month"],
+                    "exp_year": data_dict["expiry_year"],
+                    "cvc": data_dict["cvc"],
+                },
+            }
 
-            today_date = date.today()
-            borrowing.actual_return_date = today_date
-            borrowing.book.inventory += 1
-            borrowing.book.save()
-            borrowing.save()
+            payment_intent = stripe.PaymentIntent.create(
+                amount=10000,
+                currency="inr",
+            )
+            payment_intent_modified = stripe.PaymentIntent.modify(
+                payment_intent["id"],
+                payment_method=card_details["id"],
+            )
 
-            return Response("Fine payment successful", status=status.HTTP_200_OK)
+            try:
+                payment_confirm = stripe.PaymentIntent.confirm(payment_intent["id"])
+                payment_intent_modified = stripe.PaymentIntent.retrieve(
+                    payment_intent["id"]
+                )
+            except:
+                payment_intent_modified = stripe.PaymentIntent.retrieve(
+                    payment_intent["id"]
+                )
+                payment_confirm = {
+                    "stripe_payment_error": "Failed",
+                    "code": payment_intent_modified["last_payment_error"]["code"],
+                    "message": payment_intent_modified["last_payment_error"]["message"],
+                    "status": "Failed",
+                }
 
-        except Borrowing.DoesNotExist:
-            return Response("Borrowing not found", status=status.HTTP_404_NOT_FOUND)
-        except Payment.DoesNotExist:
-            return Response("Payment not found", status=status.HTTP_404_NOT_FOUND)
+            if (
+                payment_intent_modified
+                and payment_intent_modified["status"] == "succeeded"
+            ):
+                response = {
+                    "message": "Card Payment Success",
+                    "status": status.HTTP_200_OK,
+                    "card_details": card_details,
+                    "payment_intent": payment_intent_modified,
+                    "payment_confirm": payment_confirm,
+                }
+            else:
+                response = {
+                    "message": "Card Payment Failed",
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "card_details": card_details,
+                    "payment_intent": payment_intent_modified,
+                    "payment_confirm": payment_confirm,
+                }
+
+        except:
+            response = {
+                "error": "Your card number is incorrect",
+                "status": status.HTTP_400_BAD_REQUEST,
+                "payment_intent": {"id": "Null"},
+                "payment_confirm": {"status": "Failed"},
+            }
+        return response
+
+
