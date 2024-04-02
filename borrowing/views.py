@@ -1,5 +1,7 @@
 from rest_framework import mixins, viewsets, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_q.tasks import async_task
 
 from borrowing.models import Borrowing
 from borrowing.serializers import (
@@ -7,6 +9,8 @@ from borrowing.serializers import (
     BorrowingListSerializer,
     BorrowingDetailSerializer
 )
+
+from .notificatioins import notify_new_borrowing
 
 
 class BorrowingViewSet(
@@ -57,3 +61,25 @@ class BorrowingViewSet(
         serializer.save(user=self.request.user)
         book.inventory -= 1
         book.save()
+
+    @action(
+        methods=["POST",],
+        detail=True,
+        url_path="return",
+    )
+    def return_book(self, request, pk=None):
+        borrowing = self.get_object()
+
+        if borrowing.actual_return_date:
+            return Response(
+                {"error": "This borrowing has already been returned."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        borrowing.actual_return_date = request.data.get("actual_return_date")
+        borrowing.save()
+
+        borrowing.book.inventory += 1
+        borrowing.book.save()
+
+        return Response({"message": "Borrowing returned successfully."}, status=status.HTTP_200_OK)
