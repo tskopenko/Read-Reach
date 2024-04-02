@@ -1,8 +1,10 @@
 import os
 from typing import Union
+import datetime
 
 import stripe
 
+from rest_framework import serializers
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -91,45 +93,27 @@ def create_checkout_session(pk: int, type_: str) -> Union[Response, None]:
 
 def stripe_card_payment(data_dict):
     try:
-        # Extract card details from the data dictionary
-        card_details = {
-            "number": data_dict["card_number"],
-            "exp_month": data_dict["expiry_month"],
-            "exp_year": data_dict["expiry_year"],
-            "cvc": data_dict["cvc"],
-        }
-
-        # Create a payment intent
+        # Create a payment intent with the specified amount, currency, and payment method
         payment_intent = stripe.PaymentIntent.create(
             amount=10000,
             currency="inr",
+            payment_method="pm_card_visa_debit",
+            confirm=True,
+            confirmation_method="manual",
+            return_url=f"{LOCAL_DOMAIN}api/payments/success_payment",
         )
 
-        # Modify the payment intent to specify payment method (card)
-        stripe.PaymentIntent.modify(
-            payment_intent["id"],
-            payment_method="card",
-        )
-
-        # Confirm the payment intent
-        payment_confirm = stripe.PaymentIntent.confirm(payment_intent["id"])
-
-        # Retrieve the updated payment intent information
-        payment_intent_modified = stripe.PaymentIntent.retrieve(payment_intent["id"])
-
-        if payment_intent_modified and payment_intent_modified["status"] == "succeeded":
+        if payment_intent.status == "succeeded":
             response = {
                 "message": "Card Payment Success",
                 "status": status.HTTP_200_OK,
-                "card_details": card_details,
-                "payment_intent": payment_intent_modified,
+                "payment_intent": payment_intent,
             }
         else:
             response = {
                 "message": "Card Payment Failed",
                 "status": status.HTTP_400_BAD_REQUEST,
-                "card_details": card_details,
-                "payment_intent": payment_intent_modified,
+                "payment_intent": payment_intent,
             }
 
     except stripe.error.CardError as e:
@@ -140,3 +124,40 @@ def stripe_card_payment(data_dict):
         }
 
     return response
+
+def check_expiry_month(value):
+    """
+    Check if the provided expiry month is valid.
+    Raises a validation error if the month is not between 1 and 12.
+    """
+    if not 1 <= int(value) <= 12:
+        raise serializers.ValidationError("Invalid expiry month.")
+
+
+def check_expiry_year(value):
+    """
+    Check if the provided expiry year is valid.
+    Raises a validation error if the year is not greater than or equal to the current year.
+    """
+    today = datetime.datetime.now()
+    if not int(value) >= today.year:
+        raise serializers.ValidationError("Invalid expiry year.")
+
+
+def check_cvc(value):
+    """
+    Check if the provided CVC number is valid.
+    Raises a validation error if the length of the CVC number is not between 3 and 4 characters.
+    """
+    if not 3 <= len(value) <= 4:
+        raise serializers.ValidationError("Invalid CVC number.")
+
+
+def check_payment_method(value):
+    """
+    Check if the provided payment method is valid.
+    Raises a validation error if the payment method is not 'card'.
+    """
+    payment_method = value.lower()
+    if payment_method not in ["card"]:
+        raise serializers.ValidationError("Invalid payment method.")
