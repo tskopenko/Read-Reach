@@ -19,25 +19,18 @@ class Payment(models.Model):
     """
     Represents a payment made in the system.
     """
+
     status = models.CharField(
-        max_length=10,
-        choices=[
-            (status.value, status.name)
-            for status in PaymentStatus
-        ]
+        max_length=10, choices=[(status.value, status.name) for status in PaymentStatus]
     )
     type = models.CharField(
-        max_length=10,
-        choices=[
-            (type_.value, type_.name)
-            for type_ in PaymentType
-        ]
+        max_length=10, choices=[(type_.value, type_.name) for type_ in PaymentType]
     )
     borrowing = models.ForeignKey(
         Borrowing, on_delete=models.CASCADE, related_name="payments"
     )
-    session_url = models.URLField()  # URL to stripe payment session
-    session_id = models.CharField(max_length=100)  # id of stripe payment session
+    session_url = models.URLField()
+    session_id = models.CharField(max_length=100)
     money_to_pay = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
