@@ -1,11 +1,6 @@
 from rest_framework import serializers
-from .models import Payment
-from payment.payment_utils import (
-    check_expiry_month,
-    check_expiry_year,
-    check_cvc,
-    check_payment_method
-)
+
+from payment.models import Payment
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -16,27 +11,40 @@ class PaymentSerializer(serializers.ModelSerializer):
             "status",
             "type",
             "borrowing",
-            "money_to_pay",
             "session_url",
             "session_id",
+            "money_to_pay",
         )
 
 
 class PaymentListSerializer(PaymentSerializer):
-    class Meta(PaymentSerializer.Meta):
-        fields = ("id", "status", "type", "borrowing", "money_to_pay")
+    class Meta:
+        model = Payment
+        fields = (
+            "id",
+            "status",
+            "type",
+            "borrowing",
+            "money_to_pay"
+        )
 
 
 class PaymentDetailSerializer(PaymentSerializer):
-    book = serializers.CharField(source="borrowing.book_id.title", read_only=True)
+    book = serializers.CharField(
+        source="borrowing.book_id.title", read_only=True
+    )
     return_date = serializers.CharField(
         source="borrowing.expected_return_date", read_only=True
+    )
+    user = serializers.CharField(
+        source="borrowing.user.email", read_only=True
     )
 
     class Meta:
         model = Payment
         fields = (
             "id",
+            "user",
             "status",
             "return_date",
             "book",
@@ -44,22 +52,3 @@ class PaymentDetailSerializer(PaymentSerializer):
             "session_url",
             "session_id",
         )
-
-
-class CardInformationSerializer(serializers.Serializer):
-    card_number = serializers.CharField(max_length=150, required=True)
-    expiry_month = serializers.CharField(
-        max_length=150,
-        required=True,
-        validators=[check_expiry_month],
-    )
-    expiry_year = serializers.CharField(
-        max_length=150,
-        required=True,
-        validators=[check_expiry_year],
-    )
-    cvc = serializers.CharField(
-        max_length=150,
-        required=True,
-        validators=[check_cvc],
-    )

@@ -5,26 +5,31 @@ from payment.views import (
     PaymentViewSet,
     PaymentSuccessView,
     PaymentCancelView,
-    PaymentAPI,
+    PaymentFineSuccessView,
 )
 
 
-app_name = "payment"
+app_name = "payments"
 
 router = routers.DefaultRouter()
-router.register("payments", PaymentViewSet)
+router.register("", PaymentViewSet)
+
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("make_payment/", PaymentAPI.as_view(), name="make_payment"),
     path(
-        "cancel_payment/",
-        PaymentCancelView.as_view(),
-        name="cancel_payment"
+        "<int:pk>/success_payment/",
+        PaymentSuccessView.as_view(),
+        name="payment-success",
     ),
     path(
-        "success_payment/",
-        PaymentSuccessView.as_view(),
-        name="success_payment",
+        "<int:pk>/success_fine_payment/",
+        PaymentFineSuccessView.as_view(),
+        name="payment-fine-success",
+    ),
+    path(
+        "<int:pk>/cancel_payment/",
+        PaymentCancelView.as_view(),
+        name="payment-cancel",
     ),
 ]
