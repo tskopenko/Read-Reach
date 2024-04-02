@@ -4,7 +4,6 @@ from payment.payment_utils import (
     check_expiry_month,
     check_expiry_year,
     check_cvc,
-    check_payment_method
 )
 
 

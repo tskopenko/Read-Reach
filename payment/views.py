@@ -4,6 +4,7 @@ import stripe
 
 from django.http import HttpResponse
 from rest_framework import viewsets, status
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -17,35 +18,46 @@ from payment.serializers import (
 )
 
 
-class PaymentViewSet(viewsets.ModelViewSet):
+stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
+
+
+class CreatePaymentAPI(APIView):
     """
-    API endpoint for payment create, list, retrieve operations.
+    API endpoint for processing credit card payments.
     """
+    serializer_class = CardInformationSerializer
 
-    queryset = Payment.objects.all().select_related("borrowing")
-    serializer_class = PaymentSerializer
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
 
-    def get_queryset(self):
-        """
-        For admin-user return all payments;
-        For simple user return only payments related to the current user
-        """
-        if self.action == "list":
-            if not self.request.user.is_staff:
-                return self.queryset.filter(borrowing_id__user=self.request.user)
+        if serializer.is_valid():
+            stripe_card_payment()
+            return Response("Payment created successfully", status=status.HTTP_201_CREATED)
 
-        return self.queryset
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_serializer_class(self):
-        """
-        Determine which serializer class to use based on the action being performed.
-        """
-        if self.action == "list":
-            return PaymentListSerializer
-        if self.action == "retrieve":
-            return PaymentDetailSerializer
 
-        return PaymentSerializer
+class PaymentListView(APIView):
+    """
+    API endpoint for creating and listing payments.
+    """
+    def get(self, request):
+        if not request.user.is_staff:
+            # payments = Payment.objects.filter(borrowing_id__user=request.user)
+            payments = Payment.objects.all()
+        else:
+            payments = Payment.objects.all()
+
+        serializer = PaymentListSerializer(payments, many=True)
+        return Response(serializer.data)
+
+
+class PaymentDetailView(RetrieveAPIView):
+    """
+    API endpoint for retrieving details of a payment instance.
+    """
+    queryset = Payment.objects.all()
+    serializer_class = PaymentDetailSerializer
 
 
 class PaymentSuccessView(APIView):
@@ -75,30 +87,3 @@ class PaymentCancelView(APIView):
             "Payment can be completed later"
         )
         return HttpResponse(message)
-
-
-class PaymentAPI(APIView):
-    """
-    API endpoint for processing credit card payments.
-    """
-    serializer_class = CardInformationSerializer
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        response = {}
-        if serializer.is_valid():
-            data_dict = serializer.data
-
-            stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
-            response = stripe_card_payment(data_dict=data_dict)
-
-        else:
-            response = {
-                "errors": serializer.errors,
-                "status": status.HTTP_400_BAD_REQUEST,
-            }
-
-        return Response(response)
-
-
-

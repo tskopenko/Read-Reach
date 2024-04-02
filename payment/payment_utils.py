@@ -91,9 +91,11 @@ def create_checkout_session(pk: int, type_: str) -> Union[Response, None]:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def stripe_card_payment(data_dict):
+def stripe_card_payment():
+    """
+    Create a payment intent with the specified amount, currency, and payment method
+    """
     try:
-        # Create a payment intent with the specified amount, currency, and payment method
         payment_intent = stripe.PaymentIntent.create(
             amount=10000,
             currency="inr",
@@ -116,14 +118,14 @@ def stripe_card_payment(data_dict):
                 "payment_intent": payment_intent,
             }
 
-    except stripe.error.CardError as e:
-        # Handle card error (e.g., invalid card number, expired card)
+    except stripe.error.CardError as error:
         response = {
-            "error": str(e),
+            "error": str(error),
             "status": status.HTTP_400_BAD_REQUEST,
         }
 
     return response
+
 
 def check_expiry_month(value):
     """
