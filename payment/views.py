@@ -1,3 +1,5 @@
+import os
+
 import stripe
 
 from django.http import HttpResponse
@@ -5,6 +7,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from payment.payment_utils import stripe_card_payment
 from payment.models import Payment, PaymentStatus
 from payment.serializers import (
     PaymentSerializer,
@@ -86,8 +89,8 @@ class PaymentAPI(APIView):
         if serializer.is_valid():
             data_dict = serializer.data
 
-            stripe.api_key = "your-key-goes-here"
-            response = self.stripe_card_payment(data_dict=data_dict)
+            stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
+            response = stripe_card_payment(data_dict=data_dict)
 
         else:
             response = {
@@ -97,70 +100,5 @@ class PaymentAPI(APIView):
 
         return Response(response)
 
-    def stripe_card_payment(self, data_dict):
-        try:
-            card_details = {
-                "type": "card",
-                "card": {
-                    "number": data_dict["card_number"],
-                    "exp_month": data_dict["expiry_month"],
-                    "exp_year": data_dict["expiry_year"],
-                    "cvc": data_dict["cvc"],
-                },
-            }
-
-            payment_intent = stripe.PaymentIntent.create(
-                amount=10000,
-                currency="inr",
-            )
-            payment_intent_modified = stripe.PaymentIntent.modify(
-                payment_intent["id"],
-                payment_method=card_details["id"],
-            )
-
-            try:
-                payment_confirm = stripe.PaymentIntent.confirm(payment_intent["id"])
-                payment_intent_modified = stripe.PaymentIntent.retrieve(
-                    payment_intent["id"]
-                )
-            except:
-                payment_intent_modified = stripe.PaymentIntent.retrieve(
-                    payment_intent["id"]
-                )
-                payment_confirm = {
-                    "stripe_payment_error": "Failed",
-                    "code": payment_intent_modified["last_payment_error"]["code"],
-                    "message": payment_intent_modified["last_payment_error"]["message"],
-                    "status": "Failed",
-                }
-
-            if (
-                payment_intent_modified
-                and payment_intent_modified["status"] == "succeeded"
-            ):
-                response = {
-                    "message": "Card Payment Success",
-                    "status": status.HTTP_200_OK,
-                    "card_details": card_details,
-                    "payment_intent": payment_intent_modified,
-                    "payment_confirm": payment_confirm,
-                }
-            else:
-                response = {
-                    "message": "Card Payment Failed",
-                    "status": status.HTTP_400_BAD_REQUEST,
-                    "card_details": card_details,
-                    "payment_intent": payment_intent_modified,
-                    "payment_confirm": payment_confirm,
-                }
-
-        except:
-            response = {
-                "error": "Your card number is incorrect",
-                "status": status.HTTP_400_BAD_REQUEST,
-                "payment_intent": {"id": "Null"},
-                "payment_confirm": {"status": "Failed"},
-            }
-        return response
 
 
