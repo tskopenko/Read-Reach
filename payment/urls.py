@@ -5,7 +5,7 @@ from payment.views import (
     PaymentViewSet,
     PaymentSuccessView,
     PaymentCancelView,
-    PaymentFineSuccessView,
+    PaymentAPI,
 )
 
 
@@ -16,19 +16,15 @@ router.register("payments", PaymentViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("make_payment/", PaymentAPI.as_view(), name="make_payment"),
     path(
-        "<int:pk>/success_payment/",
-        PaymentSuccessView.as_view(),
-        name="success_payment"
-    ),
-    path(
-        "<int:pk>/cancel_payment/",
+        "cancel_payment/",
         PaymentCancelView.as_view(),
         name="cancel_payment"
     ),
     path(
-        "<int:pk>/success_fine_payment/",
-        PaymentFineSuccessView.as_view(),
-        name="success_fine_payment",
+        "success/",
+        PaymentSuccessView.as_view(),
+        name="success_payment",
     ),
 ]
