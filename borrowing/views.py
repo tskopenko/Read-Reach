@@ -60,7 +60,7 @@ class BorrowingViewSet(
         book.save()
 
     @action(
-        methods=["POST",],
+        methods=["POST"],
         detail=True,
         url_path="return",
     )
