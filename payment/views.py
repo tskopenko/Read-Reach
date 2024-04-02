@@ -1,3 +1,5 @@
+import os
+
 import stripe
 
 from django.http import HttpResponse
@@ -87,7 +89,7 @@ class PaymentAPI(APIView):
         if serializer.is_valid():
             data_dict = serializer.data
 
-            stripe.api_key = "your-key-goes-here"
+            stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
             response = stripe_card_payment(data_dict=data_dict)
 
         else:
