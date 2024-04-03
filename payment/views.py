@@ -1,5 +1,6 @@
 from datetime import date
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -46,7 +47,25 @@ class PaymentSuccessView(APIView):
     """
     API endpoint for success payment.
     """
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID of the borrowing object",
+                type=int,
+            ),
+        ],
+    )
     def get(self, request, pk):
+        """
+        Process successful payment.
+
+        Parameters:
+        - pk (int): ID of the borrowing object.
+
+        Returns:
+        - HTTP 200 OK: Payment successfully processed!
+        """
         borrowing = Borrowing.objects.get(id=pk)
         payment = Payment.objects.get(borrowing=borrowing)
         payment.status = Payment.StatusChoices.PAID
@@ -62,7 +81,25 @@ class PaymentFineSuccessView(APIView):
     """
     API endpoint for success fine payment.
     """
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID of the borrowing object",
+                type=int,
+            ),
+        ],
+    )
     def get(self, request, pk):
+        """
+        Process successful fine payment.
+
+        Parameters:
+        - pk (int): ID of the borrowing object.
+
+        Returns:
+        - HTTP 200 OK: Payment fine was successfully processed.
+        """
         borrowing = Borrowing.objects.get(id=pk)
         payment = Payment.objects.get(
             borrowing=borrowing, type=Payment.TypeChoices.FINE
@@ -85,7 +122,25 @@ class PaymentCancelView(APIView):
     """
     API endpoint for cancelling payment.
     """
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID of the payment",
+                type=int,
+            ),
+        ],
+    )
     def get(self, request, pk):
+        """
+        Cancel payment.
+
+        Parameters:
+        - pk (int): ID of the payment.
+
+        Returns:
+        - HTTP 400 Bad Request: Payment can be completed later. Please note that the session will remain active for 24 hours.
+        """
         return Response(
             {
                 "message":
