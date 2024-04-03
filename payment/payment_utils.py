@@ -1,5 +1,7 @@
 import os
 import datetime
+from decimal import Decimal
+
 import stripe
 
 from rest_framework import serializers
@@ -15,10 +17,12 @@ FINE_MULTIPLIER = 2
 
 def stripe_card_payment(data_dict):
     try:
-        # Create a payment intent with the specified amount, currency, and payment method
+        amount = float(data_dict.get("amount", 0))
+        amount_in_cents = int(amount * 100)
+
         payment_intent = stripe.PaymentIntent.create(
-            amount=10000,
-            currency="inr",
+            amount=amount_in_cents,
+            currency="usd",
             payment_method="pm_card_visa_debit",
             confirm=True,
             confirmation_method="manual",
@@ -30,6 +34,7 @@ def stripe_card_payment(data_dict):
                 "message": "Payment successfully completed!",
                 "status": status.HTTP_200_OK,
                 "payment_intent": payment_intent,
+                "amount": amount
             }
         else:
             response = {

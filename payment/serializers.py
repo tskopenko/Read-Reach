@@ -76,3 +76,4 @@ class CardInformationSerializer(serializers.Serializer):
         required=True,
         validators=[check_cvc],
     )
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
