@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "borrowing",
     "payment",
     "notification",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -156,6 +157,11 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZE",
 }
+
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_TIMEZONE = "Europe/Kyiv"
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Read-Reach Api",

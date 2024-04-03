@@ -13,8 +13,6 @@ from borrowing.serializers import (
 from payment.models import Payment
 # from payment.payment_utils import create_fine_session
 
-from .notificatioins import notify_new_borrowing
-
 
 class BorrowingViewSet(
     mixins.ListModelMixin,
