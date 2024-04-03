@@ -11,7 +11,7 @@ from borrowing.serializers import (
     BorrowingDetailSerializer
 )
 from payment.models import Payment
-from payment.payment_utils import create_fine_session
+# from payment.payment_utils import create_fine_session
 
 from .notificatioins import notify_new_borrowing
 
@@ -92,16 +92,6 @@ class BorrowingViewSet(
 
             return Response({"message": "Borrowing returned successfully."}, status=status.HTTP_200_OK)
 
-        session = create_fine_session(borrowing, self.request)
-
-        Payment.objects.create(
-            status=Payment.StatusChoices.PENDING,
-            type=Payment.TypeChoices.FINE,
-            borrowing=borrowing,
-            session_url=session.url,
-            session_id=session.id,
-            money_to_pay=session.amount_total / 100,
-        )
         return Response(
             {"detail": "You must pay the fine before returning the book."},
             status=status.HTTP_400_BAD_REQUEST,
