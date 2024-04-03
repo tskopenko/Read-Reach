@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from book.serializers import BookSerializer
@@ -50,11 +51,13 @@ class CreateBorrowingSerializer(serializers.ModelSerializer):
         if book.inventory == 0:
             raise serializers.ValidationError("Book inventory is 0")
 
-        borrowing = Borrowing.objects.create(
-            borrow_date=validated_data["borrow_date"],
-            expected_return_date=validated_data["expected_return_date"],
-            book=book,
-        )
-        book.inventory -= 1
-        book.save()
+        with transaction.atomic():
+            borrowing = Borrowing.objects.create(
+                borrow_date=validated_data["borrow_date"],
+                expected_return_date=validated_data["expected_return_date"],
+                book=book,
+            )
+            book.inventory -= 1
+            book.save()
+
         return borrowing

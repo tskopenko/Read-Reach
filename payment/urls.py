@@ -3,8 +3,6 @@ from rest_framework import routers
 
 from payment.views import (
     PaymentViewSet,
-    PaymentSuccessView,
-    PaymentCancelView,
     PaymentAPI,
 )
 
@@ -17,14 +15,14 @@ router.register("payments", PaymentViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("make_payment/", PaymentAPI.as_view(), name="make_payment"),
-    path(
-        "cancel_payment/",
-        PaymentCancelView.as_view(),
-        name="cancel_payment"
-    ),
-    path(
-        "success_payment/",
-        PaymentSuccessView.as_view(),
-        name="success_payment",
-    ),
+    # path(
+    #     "cancel_payment/",
+    #     PaymentCancelView.as_view(),
+    #     name="cancel_payment"
+    # ),
+    # path(
+    #     "success_payment/",
+    #     PaymentSuccessView.as_view(),
+    #     name="success_payment",
+    # ),
 ]

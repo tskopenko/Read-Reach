@@ -1,3 +1,5 @@
+from datetime import date
+
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,6 +10,8 @@ from borrowing.serializers import (
     BorrowingListSerializer,
     BorrowingDetailSerializer
 )
+from payment.models import Payment
+# from payment.payment_utils import create_fine_session
 
 
 class BorrowingViewSet(
@@ -40,7 +44,7 @@ class BorrowingViewSet(
             user_id = self.request.query_params.get("user_id", None)
             if user_id:
                 queryset = queryset.filter(user_id=user_id)
-        queryset = queryset.filter(user=user)
+        queryset = queryset.filter(user=user.id)
 
         is_active = self.request.query_params.get("is_active")
         if is_active:
@@ -65,6 +69,11 @@ class BorrowingViewSet(
         url_path="return",
     )
     def return_book(self, request, pk=None):
+        """
+        Return a borrowed book.
+        HTTP 200 OK if the book was successfully returned.
+        HTTP 400 Bad Request if there is an issue returning the book or paying a fine.
+        """
         borrowing = self.get_object()
 
         if borrowing.actual_return_date:
@@ -73,10 +82,15 @@ class BorrowingViewSet(
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        borrowing.actual_return_date = request.data.get("actual_return_date")
-        borrowing.save()
+        if borrowing.expected_return_date.date() >= date.today():
+            borrowing.actual_return_data = date.today()
+            borrowing.book.inventory += 1
+            borrowing.book.save()
+            borrowing.save()
 
-        borrowing.book.inventory += 1
-        borrowing.book.save()
+            return Response({"message": "Borrowing returned successfully."}, status=status.HTTP_200_OK)
 
-        return Response({"message": "Borrowing returned successfully."}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": "You must pay the fine before returning the book."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
