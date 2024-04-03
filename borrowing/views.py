@@ -84,7 +84,7 @@ class BorrowingViewSet(
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if borrowing.expected_return_date >= date.today():
+        if borrowing.expected_return_date.date() >= date.today():
             borrowing.actual_return_data = date.today()
             borrowing.book.inventory += 1
             borrowing.book.save()
@@ -106,4 +106,3 @@ class BorrowingViewSet(
             {"detail": "You must pay the fine before returning the book."},
             status=status.HTTP_400_BAD_REQUEST,
         )
-
