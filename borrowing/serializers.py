@@ -4,8 +4,6 @@ from rest_framework import serializers
 from book.models import Book
 from book.serializers import BookSerializer
 from borrowing.models import Borrowing
-from payment.models import Payment
-from payment.payment_utils import create_checkout_session
 
 
 class BorrowingSerializer(serializers.ModelSerializer):

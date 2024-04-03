@@ -3,33 +3,26 @@ from rest_framework import routers
 
 from payment.views import (
     PaymentViewSet,
-    PaymentSuccessView,
-    PaymentCancelView,
-    PaymentFineSuccessView,
+    PaymentAPI,
 )
 
 
-app_name = "payments"
+app_name = "payment"
 
 router = routers.DefaultRouter()
-router.register("", PaymentViewSet)
-
+router.register("payments", PaymentViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path(
-        "<int:pk>/success_payment/",
-        PaymentSuccessView.as_view(),
-        name="payment-success",
-    ),
-    path(
-        "<int:pk>/success_fine_payment/",
-        PaymentFineSuccessView.as_view(),
-        name="payment-fine-success",
-    ),
-    path(
-        "<int:pk>/cancel_payment/",
-        PaymentCancelView.as_view(),
-        name="payment-cancel",
-    ),
+    path("make_payment/", PaymentAPI.as_view(), name="make_payment"),
+    # path(
+    #     "cancel_payment/",
+    #     PaymentCancelView.as_view(),
+    #     name="cancel_payment"
+    # ),
+    # path(
+    #     "success_payment/",
+    #     PaymentSuccessView.as_view(),
+    #     name="success_payment",
+    # ),
 ]

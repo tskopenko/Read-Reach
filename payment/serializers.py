@@ -1,6 +1,11 @@
 from rest_framework import serializers
 
-from payment.models import Payment
+from .models import Payment
+from payment.payment_utils import (
+    check_expiry_month,
+    check_expiry_year,
+    check_cvc,
+)
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -52,3 +57,23 @@ class PaymentDetailSerializer(PaymentSerializer):
             "session_url",
             "session_id",
         )
+
+
+class CardInformationSerializer(serializers.Serializer):
+    card_number = serializers.CharField(max_length=150, required=True)
+    expiry_month = serializers.CharField(
+        max_length=150,
+        required=True,
+        validators=[check_expiry_month],
+    )
+    expiry_year = serializers.CharField(
+        max_length=150,
+        required=True,
+        validators=[check_expiry_year],
+    )
+    cvc = serializers.CharField(
+        max_length=150,
+        required=True,
+        validators=[check_cvc],
+    )
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
