@@ -5,6 +5,8 @@
 
 > This project aims to create an online management system for book borrowings at the local library. The system provides features for tracking books, borrowings, users, and payments, making the borrowing process more efficient and user-friendly.
 
+![DB structure](DB_structure.png)
+
 ## Key Features
 
 - **Inventory Management:** Easily track the availability of books in the library.
@@ -55,5 +57,8 @@
 
 ## Contributors
 
-- John Doe
-- Jane Smith
+- Tymofii Skopenko
+- Maksym Symonovych
+- Nataliia Korzh-Balyshyna
+- Anna Polonnikova
+- Oleksandr Barinov
