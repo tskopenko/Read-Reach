@@ -3,7 +3,6 @@ from datetime import date
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_q.tasks import async_task
 
 from borrowing.models import Borrowing
 from borrowing.serializers import (
