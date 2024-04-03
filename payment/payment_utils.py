@@ -1,6 +1,5 @@
 import os
 import datetime
-from decimal import Decimal
 
 import stripe
 
@@ -8,8 +7,6 @@ from rest_framework import serializers
 from rest_framework import status
 
 
-
-# stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
 FINE_MULTIPLIER = 2
@@ -30,11 +27,13 @@ def stripe_card_payment(data_dict):
         )
 
         if payment_intent.status == "succeeded":
+
             response = {
                 "message": "Payment successfully completed!",
                 "status": status.HTTP_200_OK,
-                "payment_intent": payment_intent,
-                "amount": amount
+                # "payment_intent": payment_intent,
+                # "payment_id": payment.id,
+                "amount": amount,
             }
         else:
             response = {

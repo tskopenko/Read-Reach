@@ -5,12 +5,12 @@ from borrowing.models import Borrowing
 
 class Payment(models.Model):
     class StatusChoices(models.Choices):
-        PENDING = "Pending"
-        PAID = "Paid"
+        PENDING = "PENDING"
+        PAID = "PAID"
 
     class TypeChoices(models.Choices):
-        PAYMENT = "Payment"
-        FINE = "Fine"
+        PAYMENT = "PAYMENT"
+        FINE = "FINE"
 
     status = models.CharField(
         max_length=7,
