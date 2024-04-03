@@ -66,13 +66,13 @@ class CreateBorrowingSerializer(serializers.ModelSerializer):
                 borrowing, self.context["request"]
             )
 
-        Payment.objects.create(
-            status=Payment.StatusChoices.PENDING,
-            type=Payment.TypeChoices.PAYMENT,
-            borrowing=borrowing,
-            session_url=session.url,
-            session_id=session.id,
-            money_to_pay=session.amount_total / 100,
-        )
+            Payment.objects.create(
+                status=Payment.StatusChoices.PENDING,
+                type=Payment.TypeChoices.PAYMENT,
+                borrowing=borrowing,
+                session_url=session.url,
+                session_id=session.id,
+                money_to_pay=session.amount_total / 100,
+            )
 
         return borrowing
