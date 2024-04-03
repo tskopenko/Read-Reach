@@ -19,8 +19,10 @@ def calculate_amount_borrowing(borrowing):
 
 
 def calculate_amount_fine(borrowing):
-    """Calculate the fine amount for a late book return based
-    on the daily fee of the book and the duration of the delay."""
+    """
+    Calculate the fine amount for a late book return based
+    on the daily fee of the book and the duration of the delay.
+    """
     sum_days = date.today() - borrowing.expected_return_date
     amount = (sum_days.days + 1) * borrowing.book.daily_fee * FINE_MULTIPLIER
     return amount
