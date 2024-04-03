@@ -1,92 +1,86 @@
-from datetime import date
-
+import os
+import datetime
 import stripe
-from django.urls import reverse
+
+from rest_framework import serializers
+from rest_framework import status
 
 
-stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
+
+# stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
+stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
+LOCAL_DOMAIN = "http://127.0.0.1:8000/"
 FINE_MULTIPLIER = 2
 
 
-def calculate_amount_borrowing(borrowing):
-    """
-    Calculate the borrowing amount based on the daily fee
-    of the book and the duration of the borrowing period.
-    """
-    sum_days = borrowing.expected_return_date - borrowing.borrow_date
-    amount = (sum_days.days + 1) * borrowing.book.daily_fee
-    return amount
+def stripe_card_payment(data_dict):
+    try:
+        # Create a payment intent with the specified amount, currency, and payment method
+        payment_intent = stripe.PaymentIntent.create(
+            amount=10000,
+            currency="inr",
+            payment_method="pm_card_visa_debit",
+            confirm=True,
+            confirmation_method="manual",
+            return_url=f"{LOCAL_DOMAIN}api/payments/success_payment",
+        )
 
-
-def calculate_amount_fine(borrowing):
-    """
-    Calculate the fine amount for a late book return based
-    on the daily fee of the book and the duration of the delay.
-    """
-    sum_days = date.today() - borrowing.expected_return_date
-    amount = (sum_days.days + 1) * borrowing.book.daily_fee * FINE_MULTIPLIER
-    return amount
-
-
-def create_checkout_session(borrowing, request):
-    """
-    Creates a Stripe Checkout session for initial borrowing payment.
-    """
-    success_url = reverse(
-        "payments:payment-success", kwargs={"pk": borrowing.id}
-    )
-    cancel_url = reverse(
-        "payments:payment-cancel", kwargs={"pk": borrowing.id}
-    )
-
-    session = stripe.checkout.Session.create(
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {
-                        "name": borrowing.book.title,
-                    },
-                    "unit_amount": int(
-                        calculate_amount_borrowing(borrowing) * 100
-                    ),
-                },
-                "quantity": 1,
+        if payment_intent.status == "succeeded":
+            response = {
+                "message": "Payment successfully completed!",
+                "status": status.HTTP_200_OK,
+                "payment_intent": payment_intent,
             }
-        ],
-        mode="payment",
-        success_url=request.build_absolute_uri(success_url),
-        cancel_url=request.build_absolute_uri(cancel_url),
-    )
-    return session
-
-
-def create_fine_session(borrowing, request):
-    """
-    Creates a Stripe Checkout session for fine borrowing payment.
-    """
-    success_url = reverse(
-        "payments:payment-fine-success", kwargs={"pk": borrowing.id}
-    )
-    cancel_url = reverse(
-        "payments:payment-cancel", kwargs={"pk": borrowing.id}
-    )
-
-    session = stripe.checkout.Session.create(
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {
-                        "name": "Fine for" + borrowing.book.title,
-                    },
-                    "unit_amount": int(calculate_amount_fine(borrowing) * 100),
-                },
-                "quantity": 1,
+        else:
+            response = {
+                "message": "Card Payment Failed",
+                "status": status.HTTP_400_BAD_REQUEST,
+                "payment_intent": payment_intent,
             }
-        ],
-        mode="payment",
-        success_url=request.build_absolute_uri(success_url),
-        cancel_url=request.build_absolute_uri(cancel_url),
-    )
-    return session
+
+    except stripe.error.CardError as e:
+        # Handle card error (e.g., invalid card number, expired card)
+        response = {
+            "error": str(e),
+            "status": status.HTTP_400_BAD_REQUEST,
+        }
+
+    return response
+
+
+def check_expiry_month(value):
+    """
+    Check if the provided expiry month is valid.
+    Raises a validation error if the month is not between 1 and 12.
+    """
+    if not 1 <= int(value) <= 12:
+        raise serializers.ValidationError("Invalid expiry month.")
+
+
+def check_expiry_year(value):
+    """
+    Check if the provided expiry year is valid.
+    Raises a validation error if the year is not greater than or equal to the current year.
+    """
+    today = datetime.datetime.now()
+    if not int(value) >= today.year:
+        raise serializers.ValidationError("Invalid expiry year.")
+
+
+def check_cvc(value):
+    """
+    Check if the provided CVC number is valid.
+    Raises a validation error if the length of the CVC number is not between 3 and 4 characters.
+    """
+    if not 3 <= len(value) <= 4:
+        raise serializers.ValidationError("Invalid CVC number.")
+
+
+def check_payment_method(value):
+    """
+    Check if the provided payment method is valid.
+    Raises a validation error if the payment method is not 'card'.
+    """
+    payment_method = value.lower()
+    if payment_method not in ["card"]:
+        raise serializers.ValidationError("Invalid payment method.")
