@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import transaction
 from rest_framework import serializers
 
@@ -15,6 +17,11 @@ class BorrowingSerializer(serializers.ModelSerializer):
     def validate_book(self, value):
         if value.inventory == 0:
             raise serializers.ValidationError("Book inventory is 0")
+        return value
+
+    def validate_expected_return_date(self, value):
+        if value.date() <= date.today():
+            raise serializers.ValidationError("Expected return date must be greater than today.")
         return value
 
 
