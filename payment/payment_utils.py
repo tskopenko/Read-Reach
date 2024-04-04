@@ -1,5 +1,6 @@
 import os
 import datetime
+from decimal import Decimal
 
 import stripe
 
@@ -9,17 +10,115 @@ from stripe import InvalidRequestError
 
 from payment.models import Payment
 from borrowing.models import Borrowing
-
+from  borrowing.views import BorrowingViewSet
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
 FINE_MULTIPLIER = 2
+SUCCESS_URL = "https://example.com/success"
+CANCEL_URL = "https://example.com/cancel"
+
+
+def create_payment() -> None:
+    pass
+
+
+def return_book(borrowing):
+    """
+    Function to handle the returning of a borrowed book.
+    """
+    if borrowing.actual_return_date:
+        return {"error": "This borrowing has already been returned."}
+
+    if borrowing.expected_return_date.date() >= datetime.date.today():
+        borrowing.actual_return_data = datetime.date.today()
+        borrowing.book.inventory += 1
+        borrowing.book.save()
+        borrowing.save()
+        return {"message": "Borrowing returned successfully."}
+
+    return {"detail": "You must pay the fine before returning the book."}
+
+
+def create_checkout_session(borrowing, money_to_pay):
+    """
+    Function to create a checkout session for Stripe payment.
+
+    This function creates a checkout session for a Stripe payment based on
+    the provided borrowing information and amount to pay.
+
+    Args:
+        borrowing (Borrowing): The borrowing object associated with the payment.
+        money_to_pay (int): The amount to pay in cents.
+
+    Returns:
+        dict: A dictionary representing the created checkout session.
+    """
+    session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount": money_to_pay,
+                    "product_data": {
+                        "name": borrowing.book.title,
+                        "description": f"Author: {borrowing.book.author}",
+                    },
+                },
+                "quantity": 1,
+            }
+        ],
+        mode="payment",
+        success_url=SUCCESS_URL,
+        cancel_url=CANCEL_URL,
+    )
+    return session
+
+
+def set_status_paid(payment):
+    """
+    Function to set the status of a payment to 'PAID'.
+
+    Args:
+        payment (Payment): The payment object whose status needs to be updated.
+
+    Returns:
+        None
+    """
+    payment.status = Payment.StatusChoices.PAID.value
+    payment.save()
 
 
 def stripe_card_payment(data_dict):
+    """
+    Function to process card payment using Stripe API.
+
+    This function takes in a dictionary containing payment information,
+    such as amount, borrowing ID, and payment type. It then creates a Stripe
+    payment intent, creates a payment object in the database, and returns
+    a response with payment details.
+
+    Args:
+        data_dict (dict): A dictionary containing payment information,
+                          including amount, borrowing ID, and payment type.
+
+    Returns:
+        dict: A dictionary containing payment details or error information.
+    """
     try:
         amount = float(data_dict.get("amount", 0))
         amount_in_cents = int(amount * 100)
+        borrowing_id = data_dict.get("borrowing")
+        borrowing = Borrowing.objects.get(id=borrowing_id)
+        type_status = data_dict.get("type")
+
+        return_book_response = return_book(borrowing)
+
+        if "error" in return_book_response:
+            return return_book_response
+
+        session = create_checkout_session(borrowing, amount_in_cents)
 
         payment_intent = stripe.PaymentIntent.create(
             amount=amount_in_cents,
@@ -27,17 +126,17 @@ def stripe_card_payment(data_dict):
             payment_method="pm_card_visa_debit",
             confirm=True,
             confirmation_method="manual",
-            return_url=f"{LOCAL_DOMAIN}api/payments/success_payment",  # NO EFFECT.fix later
+            return_url=SUCCESS_URL,
         )
 
         if payment_intent.status == "succeeded":
 
             payment = Payment.objects.create(
-                borrowing=Borrowing.objects.get(id=1),
-                session_url="https://example.com/session",
-                session_id="123459789",
-                type=Payment.TypeChoices.PAYMENT.value,
-                status=Payment.StatusChoices.PAID.value,
+                borrowing=borrowing,
+                session_url=session.url,
+                session_id=session.id,
+                type=type_status.upper(),
+                status=Payment.StatusChoices.PENDING.value,
                 money_to_pay=amount,
             )
 
@@ -47,12 +146,21 @@ def stripe_card_payment(data_dict):
                 "message": "Payment successfully completed!",
                 "user": payment.borrowing.user.email,
                 "amount": amount,
+                "session_url": session.url,
+                "session_id": session.id,
             }
+
+            set_status_paid(payment)
+            borrowing = Borrowing.objects.get(id=borrowing_id)
+            borrowing.delete()
+
         else:
             response = {
                 "message": "Card Payment Failed",
                 "status": status.HTTP_400_BAD_REQUEST,
                 "payment_intent": payment_intent,
+                "session_url": session.url,
+                "session_id": session.id,
             }
 
     except InvalidRequestError:

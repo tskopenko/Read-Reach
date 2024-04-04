@@ -17,10 +17,13 @@ class Borrowing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="borrowings")
 
     def __str__(self):
-        return str(self.borrow_date)
+        return (f"Borrow date: {self.borrow_date.strftime('%Y-%m-%d %H:%M')}, "
+                f"Expected return date: {self.expected_return_date.strftime('%Y-%m-%d %H:%M')}")
 
     def clean(self):
-        """Performs validation checks on the Borrowing instance."""
+        """
+        Performs validation checks on the Borrowing instance.
+        """
         super().clean()
 
         if (self.actual_return_date and self.borrow_date) and self.actual_return_date < self.borrow_date:
