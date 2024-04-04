@@ -24,6 +24,19 @@ def create_payment() -> None:
 
 
 def create_checkout_session(borrowing, money_to_pay):
+    """
+    Function to create a checkout session for Stripe payment.
+
+    This function creates a checkout session for a Stripe payment based on
+    the provided borrowing information and amount to pay.
+
+    Args:
+        borrowing (Borrowing): The borrowing object associated with the payment.
+        money_to_pay (int): The amount to pay in cents.
+
+    Returns:
+        dict: A dictionary representing the created checkout session.
+    """
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
         line_items=[
@@ -47,11 +60,35 @@ def create_checkout_session(borrowing, money_to_pay):
 
 
 def set_status_paid(payment):
+    """
+    Function to set the status of a payment to 'PAID'.
+
+    Args:
+        payment (Payment): The payment object whose status needs to be updated.
+
+    Returns:
+        None
+    """
     payment.status = Payment.StatusChoices.PAID.value
     payment.save()
 
 
 def stripe_card_payment(data_dict):
+    """
+    Function to process card payment using Stripe API.
+
+    This function takes in a dictionary containing payment information,
+    such as amount, borrowing ID, and payment type. It then creates a Stripe
+    payment intent, creates a payment object in the database, and returns
+    a response with payment details.
+
+    Args:
+        data_dict (dict): A dictionary containing payment information,
+                          including amount, borrowing ID, and payment type.
+
+    Returns:
+        dict: A dictionary containing payment details or error information.
+    """
     try:
         amount = float(data_dict.get("amount", 0))
         amount_in_cents = int(amount * 100)
