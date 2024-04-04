@@ -104,7 +104,7 @@ def stripe_card_payment(data_dict):
             payment_method="pm_card_visa_debit",
             confirm=True,
             confirmation_method="manual",
-            return_url=f"{LOCAL_DOMAIN}api/payments/success_payment",  # NO EFFECT.fix later
+            return_url=SUCCESS_URL,
         )
 
         if payment_intent.status == "succeeded":
