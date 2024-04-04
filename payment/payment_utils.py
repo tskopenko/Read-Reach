@@ -37,10 +37,10 @@ def count_amount_to_pay(borrowing):
         ).days
         amount_to_pay = overdue_days * borrowing.book.daily_fee * FINE_MULTIPLIER
 
-    if amount_to_pay:
+    if amount_to_pay > 0:
         return amount_to_pay
-
-    return borrowing.book.daily_fee
+    else:
+        return borrowing.book.daily_fee
 
 
 def create_checkout_session(borrowing, money_to_pay):
@@ -79,22 +79,20 @@ def create_checkout_session(borrowing, money_to_pay):
     return session
 
 
-def set_status(payment, borrowing):
+def set_type(payment, borrowing):
     """
-    Function to set the status and type of a payment based on the borrowing details.
-
-    Args:
-        payment (Payment): The payment object whose status needs to be updated.
-        borrowing (Borrowing): The borrowing object containing borrowing details.
-
-    Returns:
-        None
+    Function to set the  type of a payment based on the borrowing details.
     """
     if datetime.date.today() <= borrowing.expected_return_date.date():
         payment.type = Payment.TypeChoices.PAYMENT.value
     else:
         payment.type = Payment.TypeChoices.FINE.value
 
+
+def set_status(payment):
+    """
+    Function to set the status of a payment based on the borrowing details.
+    """
     payment.status = Payment.StatusChoices.PAID.value
     payment.save()
 
@@ -118,7 +116,6 @@ def stripe_card_payment(data_dict):
     try:
         borrowing_id = data_dict.get("borrowing")
         borrowing = Borrowing.objects.get(id=borrowing_id)
-        type_status = data_dict.get("type")
 
         amount = count_amount_to_pay(borrowing)
         amount_in_cents = int(amount * 100)
@@ -140,7 +137,7 @@ def stripe_card_payment(data_dict):
                 borrowing=borrowing,
                 session_url=session.url,
                 session_id=session.id,
-                type=type_status.upper(),
+                type=Payment.TypeChoices.FINE.value,
                 status=Payment.StatusChoices.PENDING.value,
                 money_to_pay=amount,
             )
@@ -155,7 +152,7 @@ def stripe_card_payment(data_dict):
                 "session_id": session.id,
             }
 
-            set_status(payment, borrowing)
+            set_status(payment)
 
         else:
             response = {
