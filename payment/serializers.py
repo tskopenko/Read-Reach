@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from borrowing.models import Borrowing
 from .models import Payment
 from payment.payment_utils import (
     check_expiry_month,
@@ -77,3 +78,5 @@ class CardInformationSerializer(serializers.Serializer):
         validators=[check_cvc],
     )
     amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    borrowing = serializers.PrimaryKeyRelatedField(queryset=Borrowing.objects.all())
+
