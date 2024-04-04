@@ -10,7 +10,7 @@ from stripe import InvalidRequestError
 
 from payment.models import Payment
 from borrowing.models import Borrowing
-
+from  borrowing.views import BorrowingViewSet
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
@@ -21,6 +21,22 @@ CANCEL_URL = "https://example.com/cancel"
 
 def create_payment() -> None:
     pass
+
+def return_book(borrowing):
+    """
+    Function to handle the returning of a borrowed book.
+    """
+    if borrowing.actual_return_date:
+        return {"error": "This borrowing has already been returned."}
+
+    if borrowing.expected_return_date.date() >= datetime.date.today():
+        borrowing.actual_return_data = datetime.date.today()
+        borrowing.book.inventory += 1
+        borrowing.book.save()
+        borrowing.save()
+        return {"message": "Borrowing returned successfully."}
+
+    return {"detail": "You must pay the fine before returning the book."}
 
 
 def create_checkout_session(borrowing, money_to_pay):
@@ -96,6 +112,11 @@ def stripe_card_payment(data_dict):
         borrowing = Borrowing.objects.get(id=borrowing_id)
         type_status = data_dict.get("type")
 
+        return_book_response = return_book(borrowing)
+
+        if "error" in return_book_response:
+            return return_book_response
+
         session = create_checkout_session(borrowing, amount_in_cents)
 
         payment_intent = stripe.PaymentIntent.create(
@@ -129,6 +150,8 @@ def stripe_card_payment(data_dict):
             }
 
             set_status_paid(payment)
+            borrowing = Borrowing.objects.get(id=borrowing_id)
+            borrowing.delete()
 
         else:
             response = {
