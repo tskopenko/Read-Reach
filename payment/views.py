@@ -1,7 +1,7 @@
 import os
 import stripe
 
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -21,14 +21,24 @@ class PaymentListAPIView(generics.ListAPIView):
     """
     API endpoint for retrieving a list of payments.
     """
+
     queryset = Payment.objects.all()
     serializer_class = PaymentListSerializer
+
+    # def get_queryset(self):
+    #     queryset = self.queryset
+    #
+    #     if self.request.user.is_staff:
+    #         return queryset
+    #
+    #     return queryset.filter(borrowing__user=self.request.user)
 
 
 class PaymentDetailAPIView(generics.RetrieveAPIView):
     """
     API endpoint for retrieving details of a single payment.
     """
+
     queryset = Payment.objects.all()
     serializer_class = PaymentDetailSerializer
 
@@ -37,6 +47,7 @@ class PaymentAPI(APIView):
     """
     API endpoint for processing credit card payments.
     """
+
     serializer_class = CardInformationSerializer
 
     def post(self, request):
@@ -47,6 +58,9 @@ class PaymentAPI(APIView):
             response = stripe_card_payment(data_dict=data_dict)
 
         else:
-            response = {'errors': serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}
+            response = {
+                "errors": serializer.errors,
+                "status": status.HTTP_400_BAD_REQUEST,
+            }
 
         return Response(response)

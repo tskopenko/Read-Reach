@@ -33,9 +33,7 @@ def count_amount_to_pay(borrowing):
         amount_to_pay = borrowed_days.days * borrowing.book.daily_fee
 
     else:
-        overdue_days = (
-            actual_return_data - expected_return_date
-        ).days
+        overdue_days = (actual_return_data - expected_return_date).days
         amount_to_pay = overdue_days * borrowing.book.daily_fee * FINE_MULTIPLIER
 
     if amount_to_pay > 0:
@@ -82,7 +80,7 @@ def create_checkout_session(borrowing, money_to_pay):
 
 def set_type(payment, borrowing):
     """
-    Function to set the  type of a payment based on the borrowing details.
+    Function to set the type of payment based on the borrowing details.
     """
     if datetime.date.today() <= borrowing.expected_return_date.date():
         payment.type = Payment.TypeChoices.PAYMENT.value
@@ -92,7 +90,7 @@ def set_type(payment, borrowing):
 
 def set_status(payment):
     """
-    Function to set the status of a payment based on the payment details.
+    Function to set the status of payment based on the payment details.
     """
     payment.status = Payment.StatusChoices.PAID.value
     payment.save()
