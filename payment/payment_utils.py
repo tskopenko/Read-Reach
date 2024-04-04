@@ -142,17 +142,19 @@ def stripe_card_payment(data_dict):
                 money_to_pay=amount,
             )
 
+            set_status(payment)
+            set_type(payment, borrowing)
+
             response = {
                 "payment_id": payment.id,
                 "status": status.HTTP_200_OK,
                 "message": "Payment successfully completed!",
                 "user": payment.borrowing.user.email,
                 "amount": amount,
+                "type": payment.type,
                 "session_url": session.url,
                 "session_id": session.id,
             }
-
-            set_status(payment)
 
         else:
             response = {
