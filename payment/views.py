@@ -1,41 +1,36 @@
 import os
 import stripe
 
-from rest_framework import viewsets, status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from payment.payment_utils import stripe_card_payment
 from payment.models import Payment
 from payment.serializers import (
-    PaymentSerializer,
-    PaymentListSerializer,
-    PaymentDetailSerializer,
     CardInformationSerializer,
+    PaymentDetailSerializer,
+    PaymentListSerializer,
 )
 
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 
 
-class PaymentViewSet(viewsets.ModelViewSet):
+class PaymentListAPIView(generics.ListAPIView):
     """
-    API endpoint for payment create, list, retrieve operations.
+    API endpoint for retrieving a list of payments.
     """
+    queryset = Payment.objects.all()
+    serializer_class = PaymentListSerializer
 
-    queryset = Payment.objects.all().select_related("borrowing")
-    serializer_class = PaymentSerializer
 
-    def get_serializer_class(self):
-        """
-        Determine which serializer class to use based on the action being performed.
-        """
-        if self.action == "list":
-            return PaymentListSerializer
-        if self.action == "retrieve":
-            return PaymentDetailSerializer
-
-        return PaymentSerializer
+class PaymentDetailAPIView(generics.RetrieveAPIView):
+    """
+    API endpoint for retrieving details of a single payment.
+    """
+    queryset = Payment.objects.all()
+    serializer_class = PaymentDetailSerializer
 
 
 class PaymentAPI(APIView):

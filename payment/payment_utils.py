@@ -1,15 +1,16 @@
 import os
 import datetime
-from decimal import Decimal
 
 import stripe
 
 from rest_framework import serializers
 from rest_framework import status
+from stripe import InvalidRequestError
+
+from payment.models import Payment
+from borrowing.models import Borrowing
 
 
-
-# stripe.api_key = "sk_test_51P0m5x08clH0Ss5WyssxsIFAWt4DpDr3ykkBh7VdOrVRcl7rv2cCqOZZGzwX4r26TmJVs3O8oUYmWISC3bVVXDQX00sAsF15K5"
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
 FINE_MULTIPLIER = 2
@@ -26,15 +27,26 @@ def stripe_card_payment(data_dict):
             payment_method="pm_card_visa_debit",
             confirm=True,
             confirmation_method="manual",
-            return_url=f"{LOCAL_DOMAIN}api/payments/success_payment",
+            return_url=f"{LOCAL_DOMAIN}api/payments/success_payment",  # NO EFFECT.fix later
         )
 
         if payment_intent.status == "succeeded":
+
+            payment = Payment.objects.create(
+                borrowing=Borrowing.objects.get(id=1),
+                session_url="https://example.com/session",
+                session_id="123459789",
+                type=Payment.TypeChoices.PAYMENT.value,
+                status=Payment.StatusChoices.PAID.value,
+                money_to_pay=amount,
+            )
+
             response = {
-                "message": "Payment successfully completed!",
+                "payment_id": payment.id,
                 "status": status.HTTP_200_OK,
-                "payment_intent": payment_intent,
-                "amount": amount
+                "message": "Payment successfully completed!",
+                "user": payment.borrowing.user.email,
+                "amount": amount,
             }
         else:
             response = {
@@ -42,6 +54,12 @@ def stripe_card_payment(data_dict):
                 "status": status.HTTP_400_BAD_REQUEST,
                 "payment_intent": payment_intent,
             }
+
+    except InvalidRequestError:
+        response = {
+            "error": "Payment amounts must be positive integers, equal to or greater than 1.",
+            "status": status.HTTP_400_BAD_REQUEST,
+        }
 
     except stripe.error.CardError as e:
         # Handle card error (e.g., invalid card number, expired card)
