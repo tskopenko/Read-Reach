@@ -52,6 +52,7 @@ def stripe_card_payment(data_dict):
         amount_in_cents = int(amount * 100)
         borrowing_id = data_dict.get("borrowing")
         borrowing = Borrowing.objects.get(id=borrowing_id)
+        type_status = data_dict.get("type")
 
         payment_intent = stripe.PaymentIntent.create(
             amount=amount_in_cents,
@@ -68,7 +69,7 @@ def stripe_card_payment(data_dict):
                 borrowing=borrowing,
                 session_url="https://example.com/session",
                 session_id="123459789",
-                type=Payment.TypeChoices.PAYMENT.value,
+                type=type_status.upper(),
                 status=Payment.StatusChoices.PAID.value,
                 money_to_pay=amount,
             )
