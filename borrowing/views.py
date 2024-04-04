@@ -13,8 +13,6 @@ from borrowing.serializers import (
 from payment.models import Payment
 # from payment.payment_utils import create_fine_session
 
-from .notificatioins import notify_new_borrowing
-
 
 class BorrowingViewSet(
     mixins.ListModelMixin,
@@ -46,7 +44,7 @@ class BorrowingViewSet(
             user_id = self.request.query_params.get("user_id", None)
             if user_id:
                 queryset = queryset.filter(user_id=user_id)
-        queryset = queryset.filter(user=user)
+        queryset = queryset.filter(user=user.id)
 
         is_active = self.request.query_params.get("is_active")
         if is_active:
@@ -60,6 +58,10 @@ class BorrowingViewSet(
         book = serializer.validated_data["book"]
         if book.inventory == 0:
             return Response({"error": "Book inventory is 0"}, status=status.HTTP_400_BAD_REQUEST)
+
+        expected_return_date = serializer.validared_data["expected_return_date"]
+        if expected_return_date <= date.today():
+            return Response({"error": "Expected returned date must be greater than today."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save(user=self.request.user)
         book.inventory -= 1
@@ -85,7 +87,7 @@ class BorrowingViewSet(
             )
 
         if borrowing.expected_return_date.date() >= date.today():
-            borrowing.actual_return_data = date.today()
+            borrowing.actual_return_date = date.today()
             borrowing.book.inventory += 1
             borrowing.book.save()
             borrowing.save()
