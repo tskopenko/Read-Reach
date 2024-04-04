@@ -5,6 +5,7 @@ import stripe
 
 from rest_framework import serializers
 from rest_framework import status
+
 from stripe import InvalidRequestError
 
 from payment.models import Payment
@@ -91,7 +92,7 @@ def set_type(payment, borrowing):
 
 def set_status(payment):
     """
-    Function to set the status of a payment based on the borrowing details.
+    Function to set the status of a payment based on the payment details.
     """
     payment.status = Payment.StatusChoices.PAID.value
     payment.save()
