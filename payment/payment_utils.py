@@ -1,6 +1,5 @@
 import os
 import datetime
-from decimal import Decimal
 
 import stripe
 
@@ -10,7 +9,7 @@ from stripe import InvalidRequestError
 
 from payment.models import Payment
 from borrowing.models import Borrowing
-from  borrowing.views import BorrowingViewSet
+
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
@@ -19,25 +18,29 @@ SUCCESS_URL = "https://example.com/success"
 CANCEL_URL = "https://example.com/cancel"
 
 
-def create_payment() -> None:
-    pass
-
-
-def return_book(borrowing):
+def count_amount_to_pay(borrowing):
     """
     Function to handle the returning of a borrowed book.
     """
-    if borrowing.actual_return_date:
-        return {"error": "This borrowing has already been returned."}
+    actual_return_data = datetime.date.today()
+    expected_return_date = borrowing.expected_return_date.date()
+    borrowing.actual_return_date = actual_return_data
+    borrowing.save()
 
-    if borrowing.expected_return_date.date() >= datetime.date.today():
-        borrowing.actual_return_data = datetime.date.today()
-        borrowing.book.inventory += 1
-        borrowing.book.save()
-        borrowing.save()
-        return {"message": "Borrowing returned successfully."}
+    if actual_return_data <= expected_return_date:
+        borrowed_days = borrowing.expected_return_date - borrowing.borrow_date
+        amount_to_pay = borrowed_days.days * borrowing.book.daily_fee
 
-    return {"detail": "You must pay the fine before returning the book."}
+    else:
+        overdue_days = (
+            actual_return_data - expected_return_date
+        ).days
+        amount_to_pay = overdue_days * borrowing.book.daily_fee * FINE_MULTIPLIER
+
+    if amount_to_pay:
+        return amount_to_pay
+
+    return borrowing.book.daily_fee
 
 
 def create_checkout_session(borrowing, money_to_pay):
@@ -76,16 +79,22 @@ def create_checkout_session(borrowing, money_to_pay):
     return session
 
 
-def set_status_paid(payment):
+def set_status(payment, borrowing):
     """
-    Function to set the status of a payment to 'PAID'.
+    Function to set the status and type of a payment based on the borrowing details.
 
     Args:
         payment (Payment): The payment object whose status needs to be updated.
+        borrowing (Borrowing): The borrowing object containing borrowing details.
 
     Returns:
         None
     """
+    if datetime.date.today() <= borrowing.expected_return_date.date():
+        payment.type = Payment.TypeChoices.PAYMENT.value
+    else:
+        payment.type = Payment.TypeChoices.FINE.value
+
     payment.status = Payment.StatusChoices.PAID.value
     payment.save()
 
@@ -107,16 +116,12 @@ def stripe_card_payment(data_dict):
         dict: A dictionary containing payment details or error information.
     """
     try:
-        amount = float(data_dict.get("amount", 0))
-        amount_in_cents = int(amount * 100)
         borrowing_id = data_dict.get("borrowing")
         borrowing = Borrowing.objects.get(id=borrowing_id)
         type_status = data_dict.get("type")
 
-        return_book_response = return_book(borrowing)
-
-        if "error" in return_book_response:
-            return return_book_response
+        amount = count_amount_to_pay(borrowing)
+        amount_in_cents = int(amount * 100)
 
         session = create_checkout_session(borrowing, amount_in_cents)
 
@@ -150,9 +155,7 @@ def stripe_card_payment(data_dict):
                 "session_id": session.id,
             }
 
-            set_status_paid(payment)
-            borrowing = Borrowing.objects.get(id=borrowing_id)
-            borrowing.delete()
+            set_status(payment, borrowing)
 
         else:
             response = {
