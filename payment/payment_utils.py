@@ -22,6 +22,7 @@ CANCEL_URL = "https://example.com/cancel"
 def create_payment() -> None:
     pass
 
+
 def return_book(borrowing):
     """
     Function to handle the returning of a borrowed book.
