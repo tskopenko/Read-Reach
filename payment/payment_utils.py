@@ -15,8 +15,8 @@ from borrowing.models import Borrowing
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
 FINE_MULTIPLIER = 2
-SUCCESS_URL = "http://localhost:8000/api/payments/"
-CANCEL_URL = "http://localhost:8000/api/payments/"
+SUCCESS_URL = "https://example.com/success"
+CANCEL_URL = "https://example.com/cancel"
 
 
 def create_payment() -> None:
@@ -30,7 +30,7 @@ def create_checkout_session(borrowing, money_to_pay):
             {
                 "price_data": {
                     "currency": "usd",
-                    "unit_amount_decimal": int(Decimal(money_to_pay)) * 100,
+                    "unit_amount": money_to_pay,
                     "product_data": {
                         "name": borrowing.book.title,
                         "description": f"Author: {borrowing.book.author}",
@@ -46,6 +46,11 @@ def create_checkout_session(borrowing, money_to_pay):
     return session
 
 
+def set_status_paid(payment):
+    payment.status = Payment.StatusChoices.PAID.value
+    payment.save()
+
+
 def stripe_card_payment(data_dict):
     try:
         amount = float(data_dict.get("amount", 0))
@@ -53,6 +58,8 @@ def stripe_card_payment(data_dict):
         borrowing_id = data_dict.get("borrowing")
         borrowing = Borrowing.objects.get(id=borrowing_id)
         type_status = data_dict.get("type")
+
+        session = create_checkout_session(borrowing, amount_in_cents)
 
         payment_intent = stripe.PaymentIntent.create(
             amount=amount_in_cents,
@@ -67,10 +74,10 @@ def stripe_card_payment(data_dict):
 
             payment = Payment.objects.create(
                 borrowing=borrowing,
-                session_url="https://example.com/session",
-                session_id="123459789",
+                session_url=session.url,
+                session_id=session.id,
                 type=type_status.upper(),
-                status=Payment.StatusChoices.PAID.value,
+                status=Payment.StatusChoices.PENDING.value,
                 money_to_pay=amount,
             )
 
@@ -80,12 +87,19 @@ def stripe_card_payment(data_dict):
                 "message": "Payment successfully completed!",
                 "user": payment.borrowing.user.email,
                 "amount": amount,
+                "session_url": session.url,
+                "session_id": session.id,
             }
+
+            set_status_paid(payment)
+
         else:
             response = {
                 "message": "Card Payment Failed",
                 "status": status.HTTP_400_BAD_REQUEST,
                 "payment_intent": payment_intent,
+                "session_url": session.url,
+                "session_id": session.id,
             }
 
     except InvalidRequestError:
