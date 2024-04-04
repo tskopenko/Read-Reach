@@ -1,5 +1,6 @@
 import os
 import datetime
+from decimal import Decimal
 
 import stripe
 
@@ -14,12 +15,43 @@ from borrowing.models import Borrowing
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 LOCAL_DOMAIN = "http://127.0.0.1:8000/"
 FINE_MULTIPLIER = 2
+SUCCESS_URL = "http://localhost:8000/api/payments/"
+CANCEL_URL = "http://localhost:8000/api/payments/"
+
+
+def create_payment() -> None:
+    pass
+
+
+def create_checkout_session(borrowing, money_to_pay):
+    session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount_decimal": int(Decimal(money_to_pay)) * 100,
+                    "product_data": {
+                        "name": borrowing.book.title,
+                        "description": f"Author: {borrowing.book.author}",
+                    },
+                },
+                "quantity": 1,
+            }
+        ],
+        mode="payment",
+        success_url=SUCCESS_URL,
+        cancel_url=CANCEL_URL,
+    )
+    return session
 
 
 def stripe_card_payment(data_dict):
     try:
         amount = float(data_dict.get("amount", 0))
         amount_in_cents = int(amount * 100)
+        borrowing_id = data_dict.get("borrowing")
+        borrowing = Borrowing.objects.get(id=borrowing_id)
 
         payment_intent = stripe.PaymentIntent.create(
             amount=amount_in_cents,
@@ -33,7 +65,7 @@ def stripe_card_payment(data_dict):
         if payment_intent.status == "succeeded":
 
             payment = Payment.objects.create(
-                borrowing=Borrowing.objects.get(id=1),
+                borrowing=borrowing,
                 session_url="https://example.com/session",
                 session_id="123459789",
                 type=Payment.TypeChoices.PAYMENT.value,
