@@ -15,7 +15,7 @@ from borrowing.models import Borrowing
 stripe.api_key = core.settings.STRIPE_SECRET_KEY
 LOCAL_DOMAIN = core.settings.LOCAL_DOMAIN
 FINE_MULTIPLIER = 2
-SUCCESS_URL = "{LOCAL_DOMAIN}/api/payments/<int:pk>/success/"
+SUCCESS_URL = "{LOCAL_DOMAIN}/api/payments/{{PAYMENT_PK}}/success/"
 CANCEL_URL = "{LOCAL_DOMAIN}/api/payments/cancel/"
 
 
