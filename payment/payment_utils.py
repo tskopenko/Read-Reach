@@ -1,4 +1,3 @@
-import os
 import datetime
 
 import stripe
@@ -8,12 +7,13 @@ from rest_framework import status
 
 from stripe import InvalidRequestError
 
+import core.settings
 from payment.models import Payment
 from borrowing.models import Borrowing
 
 
-stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
-LOCAL_DOMAIN = os.environ["LOCAL_DOMAIN"]
+stripe.api_key = core.settings.STRIPE_SECRET_KEY
+LOCAL_DOMAIN = core.settings.LOCAL_DOMAIN
 FINE_MULTIPLIER = 2
 SUCCESS_URL = "https://example.com/success"
 CANCEL_URL = "https://example.com/cancel"
