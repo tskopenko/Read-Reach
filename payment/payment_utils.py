@@ -216,3 +216,12 @@ def check_payment_method(value):
     payment_method = value.lower()
     if payment_method not in ["card"]:
         raise serializers.ValidationError("Invalid payment method.")
+
+
+def check_card_number_length(value):
+    """
+    Check if the provided card number has a length of 16 digits.
+    Raises a validation error if the length is not 16 digits.
+    """
+    if len(value) != 16:
+        raise serializers.ValidationError("Card number must be 16 digits.")

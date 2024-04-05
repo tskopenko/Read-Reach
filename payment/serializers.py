@@ -6,6 +6,7 @@ from payment.payment_utils import (
     check_expiry_month,
     check_expiry_year,
     check_cvc,
+    check_card_number_length,
 )
 
 
@@ -64,7 +65,11 @@ class PaymentDetailSerializer(PaymentSerializer):
 
 
 class CardInformationSerializer(serializers.Serializer):
-    card_number = serializers.CharField(max_length=150, required=True)
+    card_number = serializers.CharField(
+        max_length=150,
+        required=True,
+        validators=[card_number_length]
+    )
     expiry_month = serializers.CharField(
         max_length=150,
         required=True,
