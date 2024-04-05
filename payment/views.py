@@ -41,7 +41,7 @@ class PaymentDetailAPIView(generics.RetrieveAPIView):
     API endpoint for retrieving details of a single payment.
     """
 
-    queryset = Payment.objects.all()
+    queryset = Payment.objects.select_related("borrowing")
     serializer_class = PaymentDetailSerializer
     permission_classes = (IsAuthenticated, )
 
