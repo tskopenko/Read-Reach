@@ -1,0 +1,972 @@
+[
+  {
+    "model": "book.book",
+    "pk": 1,
+    "fields": {
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "cover": "Hardcover",
+      "inventory": 100,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 2,
+    "fields": {
+      "title": "1984",
+      "author": "George Orwell",
+      "cover": "Softcover",
+      "inventory": 80,
+      "daily_fee": "9.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 3,
+    "fields": {
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "cover": "Hardcover",
+      "inventory": 120,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 4,
+    "fields": {
+      "title": "Moby-Dick",
+      "author": "Herman Melville",
+      "cover": "Softcover",
+      "inventory": 90,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 5,
+    "fields": {
+      "title": "War and Peace",
+      "author": "Leo Tolstoy",
+      "cover": "Hardcover",
+      "inventory": 150,
+      "daily_fee": "16.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 6,
+    "fields": {
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "cover": "Softcover",
+      "inventory": 110,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 7,
+    "fields": {
+      "title": "The Catcher in the Rye",
+      "author": "J.D. Salinger",
+      "cover": "Hardcover",
+      "inventory": 95,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 8,
+    "fields": {
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "cover": "Softcover",
+      "inventory": 140,
+      "daily_fee": "15.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 9,
+    "fields": {
+      "title": "The Alchemist",
+      "author": "Paulo Coelho",
+      "cover": "Hardcover",
+      "inventory": 105,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 10,
+    "fields": {
+      "title": "Alice's Adventures in Wonderland",
+      "author": "Lewis Carroll",
+      "cover": "Softcover",
+      "inventory": 100,
+      "daily_fee": "11.99"
+    }
+  },
+    {
+    "model": "book.book",
+    "pk": 11,
+    "fields": {
+      "title": "The Lord of the Rings",
+      "author": "J.R.R. Tolkien",
+      "cover": "Hardcover",
+      "inventory": 180,
+      "daily_fee": "18.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 12,
+    "fields": {
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "cover": "Softcover",
+      "inventory": 130,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 13,
+    "fields": {
+      "title": "The Adventures of Huckleberry Finn",
+      "author": "Mark Twain",
+      "cover": "Softcover",
+      "inventory": 95,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 14,
+    "fields": {
+      "title": "The Chronicles of Narnia",
+      "author": "C.S. Lewis",
+      "cover": "Hardcover",
+      "inventory": 120,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 15,
+    "fields": {
+      "title": "Frankenstein",
+      "author": "Mary Shelley",
+      "cover": "Softcover",
+      "inventory": 100,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 16,
+    "fields": {
+      "title": "Dracula",
+      "author": "Bram Stoker",
+      "cover": "Hardcover",
+      "inventory": 110,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 17,
+    "fields": {
+      "title": "The Picture of Dorian Gray",
+      "author": "Oscar Wilde",
+      "cover": "Softcover",
+      "inventory": 85,
+      "daily_fee": "10.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 18,
+    "fields": {
+      "title": "Brave New World",
+      "author": "Aldous Huxley",
+      "cover": "Hardcover",
+      "inventory": 105,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 19,
+    "fields": {
+      "title": "The Grapes of Wrath",
+      "author": "John Steinbeck",
+      "cover": "Softcover",
+      "inventory": 125,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 20,
+    "fields": {
+      "title": "Les Misérables",
+      "author": "Victor Hugo",
+      "cover": "Hardcover",
+      "inventory": 150,
+      "daily_fee": "16.99"
+    }
+  },
+    {
+    "model": "book.book",
+    "pk": 21,
+    "fields": {
+      "title": "The Hitchhiker's Guide to the Galaxy",
+      "author": "Douglas Adams",
+      "cover": "Softcover",
+      "inventory": 110,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 22,
+    "fields": {
+      "title": "The Count of Monte Cristo",
+      "author": "Alexandre Dumas",
+      "cover": "Hardcover",
+      "inventory": 125,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 23,
+    "fields": {
+      "title": "The Brothers Karamazov",
+      "author": "Fyodor Dostoevsky",
+      "cover": "Softcover",
+      "inventory": 90,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 24,
+    "fields": {
+      "title": "One Hundred Years of Solitude",
+      "author": "Gabriel García Márquez",
+      "cover": "Hardcover",
+      "inventory": 135,
+      "daily_fee": "15.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 25,
+    "fields": {
+      "title": "The Name of the Wind",
+      "author": "Patrick Rothfuss",
+      "cover": "Softcover",
+      "inventory": 105,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 26,
+    "fields": {
+      "title": "The Stand",
+      "author": "Stephen King",
+      "cover": "Hardcover",
+      "inventory": 120,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 27,
+    "fields": {
+      "title": "The Road",
+      "author": "Cormac McCarthy",
+      "cover": "Softcover",
+      "inventory": 95,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 28,
+    "fields": {
+      "title": "Gone with the Wind",
+      "author": "Margaret Mitchell",
+      "cover": "Hardcover",
+      "inventory": 140,
+      "daily_fee": "16.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 29,
+    "fields": {
+      "title": "A Game of Thrones",
+      "author": "George R.R. Martin",
+      "cover": "Softcover",
+      "inventory": 115,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 30,
+    "fields": {
+      "title": "The Catcher in the Rye",
+      "author": "J.D. Salinger",
+      "cover": "Hardcover",
+      "inventory": 100,
+      "daily_fee": "12.99"
+    }
+  },
+    {
+    "model": "book.book",
+    "pk": 31,
+    "fields": {
+      "title": "Crime and Punishment",
+      "author": "Fyodor Dostoevsky",
+      "cover": "Softcover",
+      "inventory": 95,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 32,
+    "fields": {
+      "title": "The Odyssey",
+      "author": "Homer",
+      "cover": "Hardcover",
+      "inventory": 120,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 33,
+    "fields": {
+      "title": "The Stranger",
+      "author": "Albert Camus",
+      "cover": "Softcover",
+      "inventory": 100,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 34,
+    "fields": {
+      "title": "The Iliad",
+      "author": "Homer",
+      "cover": "Hardcover",
+      "inventory": 115,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 35,
+    "fields": {
+      "title": "The Road Less Traveled",
+      "author": "M. Scott Peck",
+      "cover": "Softcover",
+      "inventory": 105,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 36,
+    "fields": {
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "cover": "Hardcover",
+      "inventory": 130,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 37,
+    "fields": {
+      "title": "The Book Thief",
+      "author": "Markus Zusak",
+      "cover": "Softcover",
+      "inventory": 110,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 38,
+    "fields": {
+      "title": "The Kite Runner",
+      "author": "Khaled Hosseini",
+      "cover": "Hardcover",
+      "inventory": 125,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 39,
+    "fields": {
+      "title": "Little Women",
+      "author": "Louisa May Alcott",
+      "cover": "Softcover",
+      "inventory": 95,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 40,
+    "fields": {
+      "title": "The Da Vinci Code",
+      "author": "Dan Brown",
+      "cover": "Hardcover",
+      "inventory": 135,
+      "daily_fee": "15.99"
+    }
+  },
+    {
+    "model": "book.book",
+    "pk": 41,
+    "fields": {
+      "title": "The Shining",
+      "author": "Stephen King",
+      "cover": "Softcover",
+      "inventory": 100,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 42,
+    "fields": {
+      "title": "The Secret Garden",
+      "author": "Frances Hodgson Burnett",
+      "cover": "Hardcover",
+      "inventory": 120,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 43,
+    "fields": {
+      "title": "Charlotte's Web",
+      "author": "E.B. White",
+      "cover": "Softcover",
+      "inventory": 110,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 44,
+    "fields": {
+      "title": "The Little Prince",
+      "author": "Antoine de Saint-Exupéry",
+      "cover": "Hardcover",
+      "inventory": 130,
+      "daily_fee": "15.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 45,
+    "fields": {
+      "title": "Anne of Green Gables",
+      "author": "L.M. Montgomery",
+      "cover": "Softcover",
+      "inventory": 95,
+      "daily_fee": "11.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 46,
+    "fields": {
+      "title": "A Wrinkle in Time",
+      "author": "Madeleine L'Engle",
+      "cover": "Hardcover",
+      "inventory": 105,
+      "daily_fee": "12.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 47,
+    "fields": {
+      "title": "Harry Potter and the Philosopher's Stone",
+      "author": "J.K. Rowling",
+      "cover": "Softcover",
+      "inventory": 140,
+      "daily_fee": "16.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 48,
+    "fields": {
+      "title": "Matilda",
+      "author": "Roald Dahl",
+      "cover": "Hardcover",
+      "inventory": 125,
+      "daily_fee": "14.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 49,
+    "fields": {
+      "title": "The Hunger Games",
+      "author": "Suzanne Collins",
+      "cover": "Softcover",
+      "inventory": 115,
+      "daily_fee": "13.99"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 50,
+    "fields": {
+      "title": "The Giver",
+      "author": "Lois Lowry",
+      "cover": "Hardcover",
+      "inventory": 110,
+      "daily_fee": "13.99"
+    }
+  },
+    {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "email": "bill_bober@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+      "email": "jane_doe@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 3,
+    "fields": {
+      "email": "john_smith@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 4,
+    "fields": {
+      "email": "lisa_kim@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 5,
+    "fields": {
+      "email": "michael_johnson@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 6,
+    "fields": {
+      "email": "emily_adams@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 7,
+    "fields": {
+      "email": "david_brown@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 8,
+    "fields": {
+      "email": "sarah_clark@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 9,
+    "fields": {
+      "email": "chris_evans@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 10,
+    "fields": {
+      "email": "olivia_fisher@email.com",
+      "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
+      "is_staff": false
+    }
+  },
+    {
+    "model": "borrowing.borrowing",
+    "pk": 1,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 1,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 2,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 2,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 3,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 3,
+      "user": 3
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 4,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 4,
+      "user": 4
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 5,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 5,
+      "user": 5
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 6,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 6,
+      "user": 6
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 7,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 7,
+      "user": 7
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 8,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 8,
+      "user": 8
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 9,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 9,
+      "user": 9
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 10,
+    "fields": {
+      "borrow_date": "2024-04-06T10:00:00Z",
+      "expected_return_date": "2024-04-13T10:00:00Z",
+      "actual_return_date": null,
+      "book": 10,
+      "user": 10
+    }
+  },
+    {
+    "model": "borrowing.borrowing",
+    "pk": 11,
+    "fields": {
+      "borrow_date": "2024-04-07T10:00:00Z",
+      "expected_return_date": "2024-04-14T10:00:00Z",
+      "actual_return_date": null,
+      "book": 1,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 12,
+    "fields": {
+      "borrow_date": "2024-04-08T10:00:00Z",
+      "expected_return_date": "2024-04-15T10:00:00Z",
+      "actual_return_date": "2024-04-14T10:00:00Z",
+      "book": 2,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 13,
+    "fields": {
+      "borrow_date": "2024-04-09T10:00:00Z",
+      "expected_return_date": "2024-04-16T10:00:00Z",
+      "actual_return_date": null,
+      "book": 3,
+      "user": 3
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 14,
+    "fields": {
+      "borrow_date": "2024-04-10T10:00:00Z",
+      "expected_return_date": "2024-04-17T10:00:00Z",
+      "actual_return_date": "2024-04-15T10:00:00Z",
+      "book": 4,
+      "user": 4
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 15,
+    "fields": {
+      "borrow_date": "2024-04-11T10:00:00Z",
+      "expected_return_date": "2024-04-18T10:00:00Z",
+      "actual_return_date": null,
+      "book": 5,
+      "user": 5
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 16,
+    "fields": {
+      "borrow_date": "2024-04-12T10:00:00Z",
+      "expected_return_date": "2024-04-19T10:00:00Z",
+      "actual_return_date": null,
+      "book": 6,
+      "user": 6
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 17,
+    "fields": {
+      "borrow_date": "2024-04-13T10:00:00Z",
+      "expected_return_date": "2024-04-20T10:00:00Z",
+      "actual_return_date": "2024-04-18T10:00:00Z",
+      "book": 7,
+      "user": 7
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 18,
+    "fields": {
+      "borrow_date": "2024-04-14T10:00:00Z",
+      "expected_return_date": "2024-04-21T10:00:00Z",
+      "actual_return_date": null,
+      "book": 8,
+      "user": 8
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 19,
+    "fields": {
+      "borrow_date": "2024-04-15T10:00:00Z",
+      "expected_return_date": "2024-04-22T10:00:00Z",
+      "actual_return_date": null,
+      "book": 9,
+      "user": 9
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 20,
+    "fields": {
+      "borrow_date": "2024-04-16T10:00:00Z",
+      "expected_return_date": "2024-04-23T10:00:00Z",
+      "actual_return_date": "2024-04-20T10:00:00Z",
+      "book": 10,
+      "user": 10
+    }
+  },
+    {
+    "model": "borrowing.borrowing",
+    "pk": 21,
+    "fields": {
+      "borrow_date": "2024-04-17T10:00:00Z",
+      "expected_return_date": "2024-04-24T10:00:00Z",
+      "actual_return_date": null,
+      "book": 1,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 22,
+    "fields": {
+      "borrow_date": "2024-04-18T10:00:00Z",
+      "expected_return_date": "2024-04-25T10:00:00Z",
+      "actual_return_date": null,
+      "book": 2,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 23,
+    "fields": {
+      "borrow_date": "2024-04-19T10:00:00Z",
+      "expected_return_date": "2024-04-26T10:00:00Z",
+      "actual_return_date": null,
+      "book": 3,
+      "user": 3
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 24,
+    "fields": {
+      "borrow_date": "2024-04-20T10:00:00Z",
+      "expected_return_date": "2024-04-27T10:00:00Z",
+      "actual_return_date": "2024-04-24T10:00:00Z",
+      "book": 4,
+      "user": 4
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 25,
+    "fields": {
+      "borrow_date": "2024-04-21T10:00:00Z",
+      "expected_return_date": "2024-04-28T10:00:00Z",
+      "actual_return_date": null,
+      "book": 5,
+      "user": 5
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 26,
+    "fields": {
+      "borrow_date": "2024-04-22T10:00:00Z",
+      "expected_return_date": "2024-04-29T10:00:00Z",
+      "actual_return_date": null,
+      "book": 6,
+      "user": 6
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 27,
+    "fields": {
+      "borrow_date": "2024-04-23T10:00:00Z",
+      "expected_return_date": "2024-04-30T10:00:00Z",
+      "actual_return_date": "2024-04-27T10:00:00Z",
+      "book": 7,
+      "user": 7
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 28,
+    "fields": {
+      "borrow_date": "2024-04-24T10:00:00Z",
+      "expected_return_date": "2024-05-01T10:00:00Z",
+      "actual_return_date": null,
+      "book": 8,
+      "user": 8
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 29,
+    "fields": {
+      "borrow_date": "2024-04-25T10:00:00Z",
+      "expected_return_date": "2024-05-02T10:00:00Z",
+      "actual_return_date": null,
+      "book": 9,
+      "user": 9
+    }
+  },
+  {
+    "model": "borrowing.borrowing",
+    "pk": 30,
+    "fields": {
+      "borrow_date": "2024-04-26T10:00:00Z",
+      "expected_return_date": "2024-05-03T10:00:00Z",
+      "actual_return_date": "2024-05-02T10:00:00Z",
+      "book": 10,
+      "user": 10
+    }
+  }
+]
