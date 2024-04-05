@@ -968,5 +968,364 @@
       "book": 10,
       "user": 10
     }
+  },
+    {
+    "model": "payment.payment",
+    "pk": 1,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 2,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=AGC123",
+      "money_to_pay": 10.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 2,
+    "fields": {
+      "status": "PAID",
+      "type": "FINE",
+      "borrowing": 4,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=ABC123",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 15.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 3,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 7,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=PKL442",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 20.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 4,
+    "fields": {
+      "status": "PAID",
+      "type": "FINE",
+      "borrowing": 10,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=JBL882",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 25.00
+    }
+  },
+    {
+    "model": "payment.payment",
+    "pk": 5,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 12,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=MKL012",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 30.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 6,
+    "fields": {
+      "status": "PAID",
+      "type": "FINE",
+      "borrowing": 15,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=JOL012",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 35.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 7,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 18,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=JKL012",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 40.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 8,
+    "fields": {
+      "status": "PAID",
+      "type": "FINE",
+      "borrowing": 21,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=GHI789",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 45.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 9,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 24,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=ASC143",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 50.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 10,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 27,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=DEF456",
+      "session_id": "cs_test_a1gOXyPnsgTgqVBIWIHFEhvteq9JK40fI208g4rDdZEe4ca1QVGzsaWfSk",
+      "money_to_pay": 55.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 11,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 11,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=ABC123",
+      "session_id": "cs_test_session_id_1",
+      "money_to_pay": 60.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 12,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 12,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=DEF456",
+      "session_id": "cs_test_session_id_2",
+      "money_to_pay": 70.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 13,
+    "fields": {
+      "status": "PAID",
+      "type": "FINE",
+      "borrowing": 13,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=GHI789",
+      "session_id": "cs_test_session_id_3",
+      "money_to_pay": 80.00
+    }
+  },
+    {
+    "model": "payment.payment",
+    "pk": 14,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 14,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=JKL012",
+      "session_id": "cs_test_session_id_4",
+      "money_to_pay": 90.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 15,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 15,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=MNO345",
+      "session_id": "cs_test_session_id_5",
+      "money_to_pay": 100.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 16,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 16,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=PQR678",
+      "session_id": "cs_test_session_id_6",
+      "money_to_pay": 110.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 17,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 17,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=STU901",
+      "session_id": "cs_test_session_id_7",
+      "money_to_pay": 120.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 18,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 18,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=VWX234",
+      "session_id": "cs_test_session_id_8",
+      "money_to_pay": 130.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 19,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 19,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=YZA567",
+      "session_id": "cs_test_session_id_9",
+      "money_to_pay": 140.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 20,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 20,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=BCD890",
+      "session_id": "cs_test_session_id_10",
+      "money_to_pay": 150.00
+    }
+  },
+    {
+    "model": "payment.payment",
+    "pk": 21,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 21,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=DEF123",
+      "session_id": "cs_test_session_id_11",
+      "money_to_pay": 160.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 22,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 22,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=GHI456",
+      "session_id": "cs_test_session_id_12",
+      "money_to_pay": 170.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 23,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 23,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=JKL789",
+      "session_id": "cs_test_session_id_13",
+      "money_to_pay": 180.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 24,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 24,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=MNO012",
+      "session_id": "cs_test_session_id_14",
+      "money_to_pay": 190.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 25,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 25,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=PQR345",
+      "session_id": "cs_test_session_id_15",
+      "money_to_pay": 200.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 26,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 26,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=STU678",
+      "session_id": "cs_test_session_id_16",
+      "money_to_pay": 210.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 27,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 27,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=VWX901",
+      "session_id": "cs_test_session_id_17",
+      "money_to_pay": 220.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 28,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 28,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=YZA234",
+      "session_id": "cs_test_session_id_18",
+      "money_to_pay": 230.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 29,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 29,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=BCD567",
+      "session_id": "cs_test_session_id_19",
+      "money_to_pay": 240.00
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 30,
+    "fields": {
+      "status": "PAID",
+      "type": "PAYMENT",
+      "borrowing": 30,
+      "session_url": "http://localhost:8000/api/payments/success?session_id=EFG890",
+      "session_id": "cs_test_session_id_20",
+      "money_to_pay": 250.00
+    }
   }
 ]
