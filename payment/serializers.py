@@ -10,6 +10,7 @@ from payment.payment_utils import (
 
 
 class PaymentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Payment
         fields = (
@@ -24,6 +25,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class PaymentListSerializer(PaymentSerializer):
+
     class Meta:
         model = Payment
         fields = (
@@ -36,6 +38,7 @@ class PaymentListSerializer(PaymentSerializer):
 
 
 class PaymentDetailSerializer(PaymentSerializer):
+
     book = serializers.CharField(
         source="borrowing.book_id.title", read_only=True
     )

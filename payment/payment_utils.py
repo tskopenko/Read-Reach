@@ -13,7 +13,7 @@ from borrowing.models import Borrowing
 
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
-LOCAL_DOMAIN = "http://127.0.0.1:8000/"
+LOCAL_DOMAIN = os.environ["LOCAL_DOMAIN"]
 FINE_MULTIPLIER = 2
 SUCCESS_URL = "https://example.com/success"
 CANCEL_URL = "https://example.com/cancel"
@@ -38,8 +38,8 @@ def count_amount_to_pay(borrowing):
 
     if amount_to_pay > 0:
         return amount_to_pay
-    else:
-        return borrowing.book.daily_fee
+
+    return borrowing.book.daily_fee
 
 
 def create_checkout_session(borrowing, money_to_pay):
