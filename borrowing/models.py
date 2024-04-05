@@ -17,8 +17,12 @@ class Borrowing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="borrowings")
 
     def __str__(self):
+        actual_return = (self.actual_return_date.strftime('%Y-%m-%d %H:%M')
+                         if self.actual_return_date
+                         else "Not returned yet")
         return (f"Borrow date: {self.borrow_date.strftime('%Y-%m-%d %H:%M')}, "
-                f"Expected return date: {self.expected_return_date.strftime('%Y-%m-%d %H:%M')}")
+                f"Expected return date: {self.expected_return_date.strftime('%Y-%m-%d %H:%M')}"
+                f"Actual return date: {actual_return}")
 
     def clean(self):
         """
