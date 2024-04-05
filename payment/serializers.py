@@ -68,7 +68,7 @@ class CardInformationSerializer(serializers.Serializer):
     card_number = serializers.CharField(
         max_length=150,
         required=True,
-        validators=[card_number_length]
+        validators=[check_card_number_length]
     )
     expiry_month = serializers.CharField(
         max_length=150,
