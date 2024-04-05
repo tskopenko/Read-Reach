@@ -17,31 +17,19 @@ class BorrowingSerializer(serializers.ModelSerializer):
     def validate_book(self, value):
         if value.inventory == 0:
             raise serializers.ValidationError("Book inventory is 0")
+
         return value
 
     def validate_expected_return_date(self, value):
         if value.date() <= date.today():
             raise serializers.ValidationError("Expected return date must be greater than today.")
+
         return value
 
 
-class BorrowingListSerializer(serializers.ModelSerializer):
+class BorrowingListSerializer(BorrowingSerializer):
     book = serializers.CharField(source="book.title", read_only=True)
-
-    class Meta:
-        model = Borrowing
-        fields = ("id", "borrow_date", "expected_return_date", "actual_return_date", "book",)
 
 
 class BorrowingDetailSerializer(BorrowingSerializer):
     book = BookSerializer(read_only=True)
-
-    class Meta:
-        model = Borrowing
-        fields = (
-            "id",
-            "borrow_date",
-            "expected_return_date",
-            "actual_return_date",
-            "book",
-        )
