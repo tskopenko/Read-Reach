@@ -29,7 +29,7 @@ urlpatterns = [
     path("api/books/", include("book.urls"), name="book"),
     path("api/users/", include("user.urls"), name="user"),
     path("api/borrowings/", include("borrowing.urls"), name="borrowing"),
-    path("api/", include("payment.urls"), name="payment"),
+    path("api/payments/", include("payment.urls"), name="payment"),
     # path("api/notifications/", include("notification.urls"), name="notification")
     path("api/doc/", SpectacularAPIView.as_view(), name="schema"),
     path(

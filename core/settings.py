@@ -29,6 +29,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 STRIPE_SECRET_KEY = os.environ["STRIPE_SECRET_KEY"]
 STRIPE_PUBLISHABLE_KEY = os.environ["STRIPE_PUBLISHABLE_KEY"]
+LOCAL_DOMAIN = os.environ["LOCAL_DOMAIN"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

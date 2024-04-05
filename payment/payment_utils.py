@@ -1,19 +1,19 @@
-import os
 import datetime
 
 import stripe
+from stripe import InvalidRequestError
 
 from rest_framework import serializers
 from rest_framework import status
 
-from stripe import InvalidRequestError
+from django.conf import settings
 
 from payment.models import Payment
 from borrowing.models import Borrowing
 
 
-stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
-LOCAL_DOMAIN = "http://127.0.0.1:8000/"
+stripe.api_key = settings.STRIPE_SECRET_KEY
+LOCAL_DOMAIN = settings.LOCAL_DOMAIN
 FINE_MULTIPLIER = 2
 SUCCESS_URL = "https://example.com/success"
 CANCEL_URL = "https://example.com/cancel"
@@ -33,15 +33,13 @@ def count_amount_to_pay(borrowing):
         amount_to_pay = borrowed_days.days * borrowing.book.daily_fee
 
     else:
-        overdue_days = (
-            actual_return_data - expected_return_date
-        ).days
+        overdue_days = (actual_return_data - expected_return_date).days
         amount_to_pay = overdue_days * borrowing.book.daily_fee * FINE_MULTIPLIER
 
     if amount_to_pay > 0:
         return amount_to_pay
-    else:
-        return borrowing.book.daily_fee
+
+    return borrowing.book.daily_fee
 
 
 def create_checkout_session(borrowing, money_to_pay):
@@ -82,7 +80,7 @@ def create_checkout_session(borrowing, money_to_pay):
 
 def set_type(payment, borrowing):
     """
-    Function to set the  type of a payment based on the borrowing details.
+    Function to set the type of payment based on the borrowing details.
     """
     if datetime.date.today() <= borrowing.expected_return_date.date():
         payment.type = Payment.TypeChoices.PAYMENT.value
@@ -92,7 +90,7 @@ def set_type(payment, borrowing):
 
 def set_status(payment):
     """
-    Function to set the status of a payment based on the payment details.
+    Function to set the status of payment based on the payment details.
     """
     payment.status = Payment.StatusChoices.PAID.value
     payment.save()
@@ -114,15 +112,15 @@ def stripe_card_payment(data_dict):
     Returns:
         dict: A dictionary containing payment details or error information.
     """
+    borrowing_id = data_dict.get("borrowing")
+    borrowing = Borrowing.objects.get(id=borrowing_id)
+
+    amount = count_amount_to_pay(borrowing)
+    amount_in_cents = int(amount * 100)
+
+    session = create_checkout_session(borrowing, amount_in_cents)
+
     try:
-        borrowing_id = data_dict.get("borrowing")
-        borrowing = Borrowing.objects.get(id=borrowing_id)
-
-        amount = count_amount_to_pay(borrowing)
-        amount_in_cents = int(amount * 100)
-
-        session = create_checkout_session(borrowing, amount_in_cents)
-
         payment_intent = stripe.PaymentIntent.create(
             amount=amount_in_cents,
             currency="usd",
@@ -166,16 +164,19 @@ def stripe_card_payment(data_dict):
                 "session_id": session.id,
             }
 
-    except InvalidRequestError:
+    except InvalidRequestError as error:
         response = {
-            "error": "Payment amounts must be positive integers, equal to or greater than 1.",
+            "error": str(error),
             "status": status.HTTP_400_BAD_REQUEST,
+            "amount": amount,
+            "session_url": session.url,
+            "session_id": session.id,
         }
 
-    except stripe.error.CardError as e:
+    except stripe.error.CardError as error:
         # Handle card error (e.g., invalid card number, expired card)
         response = {
-            "error": str(e),
+            "error": str(error),
             "status": status.HTTP_400_BAD_REQUEST,
         }
 
@@ -218,3 +219,12 @@ def check_payment_method(value):
     payment_method = value.lower()
     if payment_method not in ["card"]:
         raise serializers.ValidationError("Invalid payment method.")
+
+
+def check_card_number_length(value):
+    """
+    Check if the provided card number has a length of 16 digits.
+    Raises a validation error if the length is not 16 digits.
+    """
+    if len(value) != 16:
+        raise serializers.ValidationError("Card number must be 16 digits.")

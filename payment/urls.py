@@ -10,7 +10,7 @@ from payment.views import (
 app_name = "payment"
 
 urlpatterns = [
-    path("payments/", PaymentListAPIView.as_view(), name="payment_list"),
-    path("payments/<int:pk>/", PaymentDetailAPIView.as_view(), name="payment_detail"),
-    path("payments/make_payment/", PaymentAPI.as_view(), name="make_payment"),
+    path("", PaymentListAPIView.as_view(), name="payment_list"),
+    path("<int:pk>/success/", PaymentDetailAPIView.as_view(), name="payment_detail"),
+    path("make_payment/", PaymentAPI.as_view(), name="make_payment"),
 ]
