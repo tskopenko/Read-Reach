@@ -112,15 +112,15 @@ def stripe_card_payment(data_dict):
     Returns:
         dict: A dictionary containing payment details or error information.
     """
+    borrowing_id = data_dict.get("borrowing")
+    borrowing = Borrowing.objects.get(id=borrowing_id)
+
+    amount = count_amount_to_pay(borrowing)
+    amount_in_cents = int(amount * 100)
+
+    session = create_checkout_session(borrowing, amount_in_cents)
+
     try:
-        borrowing_id = data_dict.get("borrowing")
-        borrowing = Borrowing.objects.get(id=borrowing_id)
-
-        amount = count_amount_to_pay(borrowing)
-        amount_in_cents = int(amount * 100)
-
-        session = create_checkout_session(borrowing, amount_in_cents)
-
         payment_intent = stripe.PaymentIntent.create(
             amount=amount_in_cents,
             currency="usd",
@@ -166,8 +166,11 @@ def stripe_card_payment(data_dict):
 
     except InvalidRequestError:
         response = {
-            "error": "Payment amounts must be positive integers, equal to or greater than 1.",
+            # "error": "Payment amounts must be positive integers, equal to or greater than 1.",
             "status": status.HTTP_400_BAD_REQUEST,
+            "amount": amount,
+            "session_url": session.url,
+            "session_id": session.id,
         }
 
     except stripe.error.CardError as e:

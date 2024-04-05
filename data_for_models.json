@@ -643,7 +643,7 @@
     "model": "borrowing.borrowing",
     "pk": 1,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2024-04-04T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 1,
@@ -654,7 +654,7 @@
     "model": "borrowing.borrowing",
     "pk": 2,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 2,
@@ -665,7 +665,7 @@
     "model": "borrowing.borrowing",
     "pk": 3,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 3,
@@ -676,7 +676,7 @@
     "model": "borrowing.borrowing",
     "pk": 4,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 4,
@@ -687,7 +687,7 @@
     "model": "borrowing.borrowing",
     "pk": 5,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 5,
@@ -698,7 +698,7 @@
     "model": "borrowing.borrowing",
     "pk": 6,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 6,
@@ -709,7 +709,7 @@
     "model": "borrowing.borrowing",
     "pk": 7,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 7,
@@ -720,7 +720,7 @@
     "model": "borrowing.borrowing",
     "pk": 8,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 8,
@@ -731,7 +731,7 @@
     "model": "borrowing.borrowing",
     "pk": 9,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 9,
@@ -742,7 +742,7 @@
     "model": "borrowing.borrowing",
     "pk": 10,
     "fields": {
-      "borrow_date": "2024-04-06T10:00:00Z",
+      "borrow_date": "2023-04-06T10:00:00Z",
       "expected_return_date": "2024-04-13T10:00:00Z",
       "actual_return_date": null,
       "book": 10,
@@ -753,7 +753,7 @@
     "model": "borrowing.borrowing",
     "pk": 11,
     "fields": {
-      "borrow_date": "2024-04-07T10:00:00Z",
+      "borrow_date": "2023-04-07T10:00:00Z",
       "expected_return_date": "2024-04-14T10:00:00Z",
       "actual_return_date": null,
       "book": 1,
@@ -764,7 +764,7 @@
     "model": "borrowing.borrowing",
     "pk": 12,
     "fields": {
-      "borrow_date": "2024-04-08T10:00:00Z",
+      "borrow_date": "2023-04-08T10:00:00Z",
       "expected_return_date": "2024-04-15T10:00:00Z",
       "actual_return_date": "2024-04-14T10:00:00Z",
       "book": 2,
@@ -775,7 +775,7 @@
     "model": "borrowing.borrowing",
     "pk": 13,
     "fields": {
-      "borrow_date": "2024-04-09T10:00:00Z",
+      "borrow_date": "2023-04-09T10:00:00Z",
       "expected_return_date": "2024-04-16T10:00:00Z",
       "actual_return_date": null,
       "book": 3,
@@ -786,7 +786,7 @@
     "model": "borrowing.borrowing",
     "pk": 14,
     "fields": {
-      "borrow_date": "2024-04-10T10:00:00Z",
+      "borrow_date": "2023-04-10T10:00:00Z",
       "expected_return_date": "2024-04-17T10:00:00Z",
       "actual_return_date": "2024-04-15T10:00:00Z",
       "book": 4,
@@ -797,7 +797,7 @@
     "model": "borrowing.borrowing",
     "pk": 15,
     "fields": {
-      "borrow_date": "2024-04-11T10:00:00Z",
+      "borrow_date": "2023-04-11T10:00:00Z",
       "expected_return_date": "2024-04-18T10:00:00Z",
       "actual_return_date": null,
       "book": 5,
@@ -808,7 +808,7 @@
     "model": "borrowing.borrowing",
     "pk": 16,
     "fields": {
-      "borrow_date": "2024-04-12T10:00:00Z",
+      "borrow_date": "2023-04-12T10:00:00Z",
       "expected_return_date": "2024-04-19T10:00:00Z",
       "actual_return_date": null,
       "book": 6,
@@ -819,7 +819,7 @@
     "model": "borrowing.borrowing",
     "pk": 17,
     "fields": {
-      "borrow_date": "2024-04-13T10:00:00Z",
+      "borrow_date": "2023-04-13T10:00:00Z",
       "expected_return_date": "2024-04-20T10:00:00Z",
       "actual_return_date": "2024-04-18T10:00:00Z",
       "book": 7,
@@ -830,7 +830,7 @@
     "model": "borrowing.borrowing",
     "pk": 18,
     "fields": {
-      "borrow_date": "2024-04-14T10:00:00Z",
+      "borrow_date": "2024-02-14T10:00:00Z",
       "expected_return_date": "2024-04-21T10:00:00Z",
       "actual_return_date": null,
       "book": 8,
@@ -841,7 +841,7 @@
     "model": "borrowing.borrowing",
     "pk": 19,
     "fields": {
-      "borrow_date": "2024-04-15T10:00:00Z",
+      "borrow_date": "2024-02-15T10:00:00Z",
       "expected_return_date": "2024-04-22T10:00:00Z",
       "actual_return_date": null,
       "book": 9,
@@ -852,7 +852,7 @@
     "model": "borrowing.borrowing",
     "pk": 20,
     "fields": {
-      "borrow_date": "2024-04-16T10:00:00Z",
+      "borrow_date": "2024-02-16T10:00:00Z",
       "expected_return_date": "2024-04-23T10:00:00Z",
       "actual_return_date": "2024-04-20T10:00:00Z",
       "book": 10,
@@ -863,7 +863,7 @@
     "model": "borrowing.borrowing",
     "pk": 21,
     "fields": {
-      "borrow_date": "2024-04-17T10:00:00Z",
+      "borrow_date": "2024-02-17T10:00:00Z",
       "expected_return_date": "2024-04-24T10:00:00Z",
       "actual_return_date": null,
       "book": 1,
@@ -874,7 +874,7 @@
     "model": "borrowing.borrowing",
     "pk": 22,
     "fields": {
-      "borrow_date": "2024-04-18T10:00:00Z",
+      "borrow_date": "2024-02-18T10:00:00Z",
       "expected_return_date": "2024-04-25T10:00:00Z",
       "actual_return_date": null,
       "book": 2,
@@ -885,7 +885,7 @@
     "model": "borrowing.borrowing",
     "pk": 23,
     "fields": {
-      "borrow_date": "2024-04-19T10:00:00Z",
+      "borrow_date": "2024-02-19T10:00:00Z",
       "expected_return_date": "2024-04-26T10:00:00Z",
       "actual_return_date": null,
       "book": 3,
@@ -896,7 +896,7 @@
     "model": "borrowing.borrowing",
     "pk": 24,
     "fields": {
-      "borrow_date": "2024-04-20T10:00:00Z",
+      "borrow_date": "2024-02-20T10:00:00Z",
       "expected_return_date": "2024-04-27T10:00:00Z",
       "actual_return_date": "2024-04-24T10:00:00Z",
       "book": 4,
@@ -907,7 +907,7 @@
     "model": "borrowing.borrowing",
     "pk": 25,
     "fields": {
-      "borrow_date": "2024-04-21T10:00:00Z",
+      "borrow_date": "2024-02-21T10:00:00Z",
       "expected_return_date": "2024-04-28T10:00:00Z",
       "actual_return_date": null,
       "book": 5,
@@ -918,7 +918,7 @@
     "model": "borrowing.borrowing",
     "pk": 26,
     "fields": {
-      "borrow_date": "2024-04-22T10:00:00Z",
+      "borrow_date": "2024-02-22T10:00:00Z",
       "expected_return_date": "2024-04-29T10:00:00Z",
       "actual_return_date": null,
       "book": 6,
@@ -940,7 +940,7 @@
     "model": "borrowing.borrowing",
     "pk": 28,
     "fields": {
-      "borrow_date": "2024-04-24T10:00:00Z",
+      "borrow_date": "2024-02-24T10:00:00Z",
       "expected_return_date": "2024-05-01T10:00:00Z",
       "actual_return_date": null,
       "book": 8,
@@ -951,7 +951,7 @@
     "model": "borrowing.borrowing",
     "pk": 29,
     "fields": {
-      "borrow_date": "2024-04-25T10:00:00Z",
+      "borrow_date": "2024-02-25T10:00:00Z",
       "expected_return_date": "2024-05-02T10:00:00Z",
       "actual_return_date": null,
       "book": 9,
