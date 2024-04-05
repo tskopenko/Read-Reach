@@ -2,7 +2,7 @@ from rest_framework import viewsets
 
 from book.models import Book
 from book.permissions import IsAdminOrReadOnly
-from book.serializers import BookSerializer, BookDetailSerializer
+from book.serializers import BookSerializer
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -20,20 +20,9 @@ class BookViewSet(viewsets.ModelViewSet):
         """
 
         title = self.request.query_params.get("title")
-
         queryset = self.queryset
 
         if title:
             queryset = queryset.filter(title__icontains=title)
 
         return queryset.distinct()
-
-    def get_serializer_class(self):
-        """
-        Determine which serializer class to use based on the action.
-        """
-
-        if self.action == "retrieve":
-            return BookDetailSerializer
-
-        return self.serializer_class
