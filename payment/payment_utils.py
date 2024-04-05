@@ -164,19 +164,19 @@ def stripe_card_payment(data_dict):
                 "session_id": session.id,
             }
 
-    except InvalidRequestError:
+    except InvalidRequestError as error:
         response = {
-            # "error": "Payment amounts must be positive integers, equal to or greater than 1.",
+            "error": str(error),
             "status": status.HTTP_400_BAD_REQUEST,
             "amount": amount,
             "session_url": session.url,
             "session_id": session.id,
         }
 
-    except stripe.error.CardError as e:
+    except stripe.error.CardError as error:
         # Handle card error (e.g., invalid card number, expired card)
         response = {
-            "error": str(e),
+            "error": str(error),
             "status": status.HTTP_400_BAD_REQUEST,
         }
 
