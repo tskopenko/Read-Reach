@@ -15,8 +15,8 @@ from borrowing.models import Borrowing
 stripe.api_key = settings.STRIPE_SECRET_KEY
 LOCAL_DOMAIN = settings.LOCAL_DOMAIN
 FINE_MULTIPLIER = 2
-SUCCESS_URL = "{LOCAL_DOMAIN}/api/payments/{{PAYMENT_PK}}/success/"
-CANCEL_URL = "{LOCAL_DOMAIN}/api/payments/cancel/"
+SUCCESS_URL = "https://example.com/success"
+CANCEL_URL = "https://example.com/cancel"
 
 
 def count_amount_to_pay(borrowing):

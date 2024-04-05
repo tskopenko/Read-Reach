@@ -59,7 +59,7 @@ class PaymentAPI(APIView):
     permission_classes = (IsAuthenticated, )
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'request': request})
         response = {}
         if serializer.is_valid():
             data_dict = serializer.data

@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, request
 
 from borrowing.models import Borrowing
 from .models import Payment
@@ -67,7 +67,6 @@ class PaymentDetailSerializer(PaymentSerializer):
 class CardInformationSerializer(serializers.Serializer):
 
     card_number = serializers.CharField(
-        max_length=150,
         required=True,
         validators=[check_card_number_length],
     )
@@ -86,4 +85,14 @@ class CardInformationSerializer(serializers.Serializer):
         required=True,
         validators=[check_cvc],
     )
-    borrowing = serializers.PrimaryKeyRelatedField(queryset=Borrowing.objects.all())
+    borrowing = serializers.PrimaryKeyRelatedField(
+        queryset=Borrowing.objects.all()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        self.fields["borrowing"].queryset = Borrowing.objects.filter(
+            user_id=request.user.id,
+            actual_return_date__isnull=True
+        )
