@@ -2,6 +2,7 @@ import os
 import stripe
 
 from rest_framework import status, generics
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -25,6 +26,9 @@ class PaymentListAPIView(generics.ListAPIView):
 
     queryset = Payment.objects.select_related("borrowing")
     serializer_class = PaymentListSerializer
+    pagination_class = PageNumberPagination
+    pagination_class.page_size = 10
+
     permission_classes = (IsAuthenticated, )
 
     def get_queryset(self):
