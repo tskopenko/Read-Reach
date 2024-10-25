@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, request
 
 from borrowing.models import Borrowing
 from .models import Payment
@@ -6,10 +6,12 @@ from payment.payment_utils import (
     check_expiry_month,
     check_expiry_year,
     check_cvc,
+    check_card_number_length,
 )
 
 
 class PaymentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Payment
         fields = (
@@ -24,6 +26,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class PaymentListSerializer(PaymentSerializer):
+
     class Meta:
         model = Payment
         fields = (
@@ -36,6 +39,7 @@ class PaymentListSerializer(PaymentSerializer):
 
 
 class PaymentDetailSerializer(PaymentSerializer):
+
     book = serializers.CharField(
         source="borrowing.book_id.title", read_only=True
     )
@@ -61,7 +65,11 @@ class PaymentDetailSerializer(PaymentSerializer):
 
 
 class CardInformationSerializer(serializers.Serializer):
-    card_number = serializers.CharField(max_length=150, required=True)
+
+    card_number = serializers.CharField(
+        required=True,
+        validators=[check_card_number_length],
+    )
     expiry_month = serializers.CharField(
         max_length=150,
         required=True,
@@ -77,4 +85,14 @@ class CardInformationSerializer(serializers.Serializer):
         required=True,
         validators=[check_cvc],
     )
-    borrowing = serializers.PrimaryKeyRelatedField(queryset=Borrowing.objects.all())
+    borrowing = serializers.PrimaryKeyRelatedField(
+        queryset=Borrowing.objects.all()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        self.fields["borrowing"].queryset = Borrowing.objects.filter(
+            user_id=request.user.id,
+            actual_return_date__isnull=True
+        )
