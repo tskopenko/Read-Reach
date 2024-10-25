@@ -1,0 +1,9 @@
+venv/
+db.sqlite3
+Dockerfile
+docker-compose.yml
+README.md
+.flake8
+.env_sample
+.env
+
