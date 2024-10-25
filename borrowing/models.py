@@ -33,6 +33,5 @@ class Borrowing(models.Model):
         if (self.actual_return_date and self.borrow_date) and self.actual_return_date < self.borrow_date:
             raise ValidationError("Actual return date cannot be before borrow date")
 
-        if self.expected_return_date and self.borrow_date:
-            if self.expected_return_date < self.borrow_date:
-                raise ValidationError("Expected return date cannot be before borrow date")
+        if self.expected_return_date < self.borrow_date:
+            raise ValidationError("Expected return date cannot be before borrow date")
