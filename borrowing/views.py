@@ -59,7 +59,9 @@ class BorrowingViewSet(
             return Response({"error": "Book inventory is 0"}, status=status.HTTP_400_BAD_REQUEST)
 
         expected_return_date = serializer.validated_data["expected_return_date"]
+        fix-validation-exp-data
         if expected_return_date.date() <= date.today():
+
             return Response({"error": "Expected returned date must be greater than today."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save(user=self.request.user)
